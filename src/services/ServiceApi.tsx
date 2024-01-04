@@ -10,9 +10,11 @@ class serviceApi {
 
     return await fetch(`${url}`, requestOptions).then(result => {       
       //Here body is not ready yet, throw promise
+      //console.log(result);
+      
       if (!result.ok) throw result;
         return {res_body: result.text().then((text) => text ? JSON.parse(text) : {}), res_status: result?.status};
-        // return result.text().then((text) => text ? JSON.parse(text) : {});
+        //return result.text().then((text) => text ? JSON.parse(text) : {});
     })
     .catch(error => {     
       //Here is still promise
@@ -117,35 +119,7 @@ class serviceApi {
     return errorMessage;
   }
 
-  
-  getCurrencyRate = async (address: string) => {
-
-    // Получаем заголовки и свойства запроса
-    let requestOptions = this.getRequestOptions();
-    // Определяем метод запроса
-    requestOptions["method"] = 'GET';
-    requestOptions["mode"] = 'no-cors';
-
-    const res = await this.getResource(address, requestOptions).then((data:any)=>{
-      // console.log('*-*-*-*-*-*Res Data');
-      // console.log(data);
-    });     
-    // -----------
-    // Проверяем наличие ошибок и если ошибки есть, генерируем exception
-    let errorMessage = '';
-    errorMessage = await this.isError(res, `address`);
-    if (errorMessage)
-    {         
-      console.log('ERROR')
-      console.log(errorMessage)
-      throw errorMessage
-    }
-    // -----------
-
-    return res
-  }
-
-  getPlanet = async (address:string) => {  
+  postCallList = async (address:string) => {  
     
     // Получаем заголовки и свойства запроса
     //let requestOptions = this.requestOptionsGet(token);
@@ -153,15 +127,14 @@ class serviceApi {
       // method: 'GET',
       headers: {
         Accept: 'application/json', // Ответ приходит в виде json
+        Authorization: 'Bearer testtoken'
       },
     } as any;
     // Определяем метод запроса
-    requestOptions["method"] = 'GET';
+    requestOptions["method"] = 'POST';
 
     // console.log('*-*-*---*requestOptions');
     // console.log(requestOptions);
-
-    //const api_address = 'https://swapi.dev/api/planets/1';
 
     const res_resource = await this.getResource(`${address}`, requestOptions);
     const res = await res_resource.res_body;

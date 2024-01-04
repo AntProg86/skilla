@@ -1,7 +1,7 @@
 
 const api_addresses = {
-  currency_rate_daily_as_json: 'https://www.cbr-xml-daily.ru/daily_json.js',
-  star_wars_planets: 'https://swapi.dev/api/planets/1',
+  skilla_call_list: 'https://api.skilla.ru/mango/getList',
+  //skilla_call_list: 'https://api.skilla.ru/testapi#mango_list/',
 }
 
 export default api_addresses

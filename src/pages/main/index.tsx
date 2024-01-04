@@ -5,6 +5,7 @@ import './styles.scss';
 import { AppContext } from '#src/app/context';
 import { getCurrencyRateFetch, getPlanetFetch } from '#src/app/actions';
 import { ActionSetErrorMessageAbsolute } from '#src/components/errorAbsolute/reducer';
+import { postCallListFetch } from '#api/actions';
 
 type Props = {
 
@@ -78,16 +79,33 @@ const MainPage: React.FunctionComponent<Props> = () => {
 
   const getCallList = () => {
     console.log('*-*-*-**getCallList');
-    
+    _appContext.doFetch(postCallListFetch, {})
+    .then((data:any) => {   
+      const {payload, error} = data;
+      console.log('*-*-*--*-*-*data');
+      console.log(data);
+      
+      if (payload){
+        
+        console.log('*-*-*-*-*payload');
+        console.log(payload);
+        
+      }
+      
+      // Очищаем сообщение
+      //dispatch(ActionMainLoadPanelMessage(''));
+      // Скрываем индикацию загрузки на весь экран
+      //dispatch(ActionMainLoadPanelShow(false));
+    });
   }
   
   return (
     <main className='call_list__main'>
       <div className='call_list__container'>
 
-      </div>
       <div onClick={getCallList}>
         get call list
+      </div>
       </div>
     </main>
   );
