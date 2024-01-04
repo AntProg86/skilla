@@ -1,0 +1,159 @@
+.absolute_error_main_container{
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  right: 0;
+
+  --absolute_error_main_container_width: max(40vw, 300px);
+  width: var(--absolute_error_main_container_width);
+  margin-right: 0px;
+  transition: margin-right  .5s;
+  
+  background-color: #0000009d;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  margin-top: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /*padding-top: 1000px;*/
+  
+}
+
+.absolute_error_hide_message{
+  /*width: 0vw;*/
+  margin-right: calc(-1 * var(--absolute_error_main_container_width));
+}
+
+
+.absolute_error_block{
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+  display:flex;
+  justify-content: center;
+  width: 100%;
+  height: 90%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.absolute_error_block.absolute_error_block_none{
+  display: none;
+}
+
+.absolute_error_block_message{ 
+  border-radius: 10px;
+
+  /*border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-top-right-radius: 10px;*/
+
+  background-color: rgb(255, 235, 235);
+  color: #000000;
+  
+  width: 90%;
+  height: 100%;
+}
+
+
+.absolute_error_block_color_top{
+  height: 22px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #e73a2d;
+}
+
+
+.absolute_error_block_content{
+  height: 90%;
+  max-height: 90%;
+}
+
+.absolute_error_block_indent_message{
+  padding-top: 20px;
+  padding-right: 10px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  
+  height: 100%;
+  max-height: 100%;
+
+  /*height: 160px;*/
+}
+
+.absolute_error_status_message{
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #e73a2d;
+}
+
+.absolute_error_text_message {
+  display: block;
+  font-size: 20px;
+  padding-top: 14px;
+  width: 100%;
+  background-color: transparent;
+  border-color: #0000000d;
+ /* height: 136px;*/
+  border-radius: 10px;
+}
+
+.absolute_error_img_cross{
+  padding-left: 8px;
+  width: 30px;
+  height: auto;
+  cursor: pointer;
+  color: white;
+}
+
+
+.absolute_error_timer{
+  background-color: #979797;
+  color: yellow;
+  display: flex;
+  justify-content: center;
+  margin-top: 167px;
+}
+
+.absolute_error_copy_buffer{
+  color: white;
+  text-align: right;
+  padding-right: 20px;
+  font-size: 14px;
+}
+
+.absolute_error_cursor_pointer{
+  cursor: pointer;
+}
+
+.absolute_error_cursor_pointer:hover {
+  color: #ddd;
+}
+
+.absolute_error_cursor_pointer:active {
+  color:rgb(255, 235, 235);
+}
+
+.absolute_error_details {
+  font-size: 14px;
+  word-wrap: break-word;
+  
+}
+
+.absolute_error_details_message {
+  font-size: 16px;
+  max-height: 50vh;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+
+/*.details > summary {
+  list-style: none;
+}*/

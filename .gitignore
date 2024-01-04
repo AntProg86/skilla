@@ -1,0 +1,10 @@
+.idea
+.build
+.dist
+.vs
+dist
+build
+node_modules
+yarn.lock
+webpack.config_old.js
+TODO.txt

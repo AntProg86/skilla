@@ -1,0 +1,11 @@
+{
+  "Version":  "1.0",
+  "ConnectData":  {
+                      "ApiURL":  "http://localhost:24812/"
+                  },
+  "ApplicationSecurityCode": "Template", 
+
+  "LocalStorageKeys":{
+    "SelectLanguage": "CurrentLanguage"
+  }
+}

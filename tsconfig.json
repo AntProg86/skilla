@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,                       // Enable error reporting for expressions and declarations with an implied `any` type.. (Включите отчеты об ошибках для выражений и объявлений с подразумеваемым типом "любой"..)
+    "module": "esnext",                          // Specify what module code is generated. (Укажите, какой код модуля генерируется.)
+    "target": "es2017",                           // Set the JavaScript language version for emitted JavaScript and include compatible library declarations. (Установите версию языка JavaScript для создаваемого JavaScript и включите объявления совместимых библиотек.)
+    "jsx": "react",                              // Specify what JSX code is generated. (Укажите, какой код JSX генерируется.)
+    "allowJs": true,                            // Allow JavaScript files to be a part of your program. Use the `checkJS` option to get errors from these files. (Разрешите файлам JavaScript быть частью вашей программы. Используйте опцию "проверки", чтобы получить ошибки из этих файлов.)
+    "sourceMap": true,                           // Create source map files for emitted JavaScript files. (Создайте файлы исходных карт для создаваемых файлов JavaScript.)
+    "moduleResolution": "node",                  // Specify how TypeScript looks up a file from a given module specifier. (Укажите, как TypeScript ищет файл из заданного спецификатора модуля.)
+    "allowSyntheticDefaultImports": true,        // Allow 'import x from y' when a module doesn't have a default export. (Разрешить "импорт x из y", если модуль не имеет экспорта по умолчанию.)
+    
+    "strictPropertyInitialization": false,       // Настройка strictPropertyInitialization определяет, должны ли поля класса инициализироваться в конструкторе.
+    "baseUrl": ".",                              // Specify the base directory to resolve non-relative module names. (Укажите базовый каталог для разрешения несвязанных имен модулей.)
+    "paths": {                                   // Specify a set of entries that re-map imports to additional lookup locations. (Укажите набор записей, которые повторно сопоставляют импорт в дополнительные места поиска.)
+      "#api/*": [
+        "src/services/*"
+      ],
+      "#src/*": [
+        "src/*"
+      ],
+      "react": [ "./node_modules/@types/react" ]
+    },
+  },
+  "exclude": [                                   // Specifies a list of type declarations to be excluded from auto type acquisition. Ex. [\"jquery\", \"lodash\"] (Указывает список объявлений типов, которые должны быть исключены из автоматического получения типов. Например ["jquery", "lodash"])
+    "node_modules"
+  ]
+}
+  
