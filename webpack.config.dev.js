@@ -5,9 +5,6 @@ const {merge} = require('webpack-merge');
 
 const baseConfig = require('./webpack.config.base');
 
-//const devtool = devMode ? 'inline-source-map' : undefined
-//const devtool = devMode ? 'inline-source-map' : undefined
-
 module.exports = merge(baseConfig, {
   //для ошибок
   devtool : 'inline-source-map',
