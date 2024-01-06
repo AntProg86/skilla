@@ -19,6 +19,12 @@ $text-color-1: #5E7793;
   max-width: 1440px;
   
 }
+
+.call_list__toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
 .call_list__container section{
   
   // padding-left: 40px;

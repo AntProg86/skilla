@@ -36,6 +36,7 @@ type Props = {
 
 }
 
+//Получить иконку для столбца «Тип» (Вызов)
 const getVectorIcon = (call:ICall) => {
   let _icon;
   switch(call.in_out){
@@ -116,6 +117,8 @@ const getDuration = (seconds:number):string => {
   return date.toISOString().substr(11, 5);
 };
 
+//Получить список, который видит пользователь
+//arr - массив из API
 const getObservableList = (arr:any[]):ICall[] => {
   const _list = new Array<ICall>();
   
@@ -189,7 +192,14 @@ const MainPage: React.FunctionComponent<Props> = () => {
   return (
     <main className='call_list__main'>
       <div className='call_list__container'>
-
+        <section className='call_list__toolbar'>
+          <div>
+            Все типы
+          </div>
+          <div>
+            DatePick
+          </div>
+        </section>
         <section>
           <div className='call_list__table_container'>
             <table className='call_list__table'>
