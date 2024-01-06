@@ -21,6 +21,8 @@ export interface IStrings extends LocalizedStringsMethods{
   duration: string;
   person: string;
   script_not_used: string;
+  date_from: string;
+  date_to: string;
 }
 
 // Таблица перевода
@@ -47,6 +49,8 @@ let strings: IStrings;
       duration: 'Длительность',
       person: 'Сотрудник',
       script_not_used: 'Скрипт не использован',
+      date_from: 'с :',
+      date_to: 'по :',
 
     },
     // en: {

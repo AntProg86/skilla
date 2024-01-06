@@ -6,6 +6,9 @@ import { AppContext } from '#src/app/context';
 import { getCurrencyRateFetch, getPlanetFetch } from '#src/app/actions';
 import { ActionSetErrorMessageAbsolute } from '#src/components/errorAbsolute/reducer';
 import { postCallListFetch } from '#api/actions';
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css'
+import ru from 'date-fns/locale/ru';
 
 import {
   vector_incoming,
@@ -23,8 +26,11 @@ import {
   call_type,
   assessment,
  } from './types';
+import { IconCalendar } from './pictures/svg';
 
 type State = {
+  startDate?: Date;
+  endDate?: Date;
   observableList?: Array<ICall>;
 };
 
@@ -181,14 +187,26 @@ const MainPage: React.FunctionComponent<Props> = () => {
       // Скрываем индикацию загрузки на весь экран
       //dispatch(ActionMainLoadPanelShow(false));
     });
-  }
+  };
+
+  const changeStartDate = (date:Date) => {
+    changeState((state) => ({ 
+    ...state, 
+     startDate: date 
+    }))
+  };
+
+  const changeEndDate = (date:Date) => {
+
+  };
 
   const test = () => {
     console.log('-*-*-*-test');
     console.log(call_type.incoming);
     
-  }
+  };
   
+  //*-*-*-*-*-*-*-*-*-*-*-*-Render
   return (
     <main className='call_list__main'>
       <div className='call_list__container'>
@@ -196,8 +214,27 @@ const MainPage: React.FunctionComponent<Props> = () => {
           <div>
             Все типы
           </div>
-          <div>
-            DatePick
+          <div className='date_picker_container'>
+            <p>{LocalizedStrings.date_from}</p>
+            <DatePicker
+              selected={state.startDate}
+              onChange={(date)=>changeStartDate(date)}
+              dateFormat='dd.MM.yyyy'
+              //placeholderText='Start Date'
+              showIcon
+              icon={<IconCalendar/>}
+              locale={ru}
+            />
+            <p>{LocalizedStrings.date_to}</p>
+            <DatePicker
+              selected={state.endDate}
+              onChange={(date)=>changeEndDate(date)}
+              dateFormat='dd.MM.yyyy'
+              //placeholderText='Start Date'
+              showIcon
+              icon={<IconCalendar/>}
+              locale={ru}
+            />
           </div>
         </section>
         <section>

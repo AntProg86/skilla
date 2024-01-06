@@ -139,3 +139,36 @@ $text-color-1: #5E7793;
   width: 32px;
   height: 32px;
 }
+
+.call_list__toolbar {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.date_picker_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.date_picker_container p{
+  margin-left: 5px;
+  margin-right: 5px;
+  color: $text-color-1;
+}
+
+.date_picker_container svg{
+  margin-left: 2px;
+  margin-right: 2px;
+  //margin-bottom: 2px;
+}
+
+.react-datepicker-wrapper:hover path{
+  fill: #002CFB;
+}
+
+.date_picker_container input {
+  width: 80px;
+  border-radius: 5px;
+  border-color: #ADBFDF;
+}
