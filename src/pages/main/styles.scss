@@ -1,5 +1,10 @@
 
-$font-size-1: 15px;
+//
+$text-color-1: #5E7793;
+
+.text-color-1 {
+  color: $text-color-1;
+}
 
 .call_list__main {
   width: 100%;
@@ -40,6 +45,8 @@ $font-size-1: 15px;
   //padding: 20px;
   padding-top: 24px;
   padding-bottom: 20px;
+  font-size: 14px;
+  color: $text-color-1;
 }
 
 .call_list__table td {
@@ -49,7 +56,14 @@ $font-size-1: 15px;
 .call_list__table tbody td { 
   vertical-align: middle;
   border-top: 1px solid #F1F4F9;
+  font-size: 15px;
 }
+.call_list__table tbody td:last-child { 
+  //background: aqua;
+  text-align: right;
+  padding-right: 5px;
+}
+
 .call_list__table tbody tr { 
   height: 65px;
 }
@@ -111,7 +125,11 @@ $font-size-1: 15px;
   display: inline-block;
 }
 
-.person_avatar {
+.assessment_script_not_used {
+  color: #EA1A4F;
+}
+
+.person_avatar_img {
   width: 32px;
   height: 32px;
 }

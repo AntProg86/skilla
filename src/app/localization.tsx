@@ -20,6 +20,7 @@ export interface IStrings extends LocalizedStringsMethods{
   bad: string;
   duration: string;
   person: string;
+  script_not_used: string;
 }
 
 // Таблица перевода
@@ -45,6 +46,7 @@ let strings: IStrings;
       bad: 'Плохо',
       duration: 'Длительность',
       person: 'Сотрудник',
+      script_not_used: 'Скрипт не использован',
 
     },
     // en: {

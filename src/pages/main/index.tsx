@@ -56,20 +56,22 @@ const getVectorIcon = (call:ICall) => {
   return _icon;
 };
 
-//Получить время из даты формата «гггг-мм-дд чч:мм:сс»
-const getTime = (date:string) => {
+//Получить время формата "чч:мм" из даты формата «гггг-мм-дд чч:мм:сс»
+const getTime = (date:string):string => {
   return  date.slice(date.indexOf(' ') + 0,-3)
 };
 
-const getRandomInteger = (min:number, max:number) => {
+//Получить случайное число
+const getRandomInteger = (min:number, max:number):number => {
   // случайное число от min до (max+1)
   let rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
-}
+};
 
-const getAssessment = () => {
+//Получить оценку
+const getAssessment = ():React.JSX.Element => {
 
-  let _random_num = getRandomInteger(0, 3);
+  let _random_num = getRandomInteger(0, 4);
   
   if(_random_num === 1){
     return(
@@ -93,15 +95,27 @@ const getAssessment = () => {
     )
   }
 
+  if(_random_num === 4){
+    return(
+      <div className='assessment_script_not_used'>
+        {LocalizedStrings.script_not_used}
+      </div>
+    )
+  }
+
   return(
     <></>
   )
-}
+};
 
-const getObservableListItem = (arr:any[]):ICall => {
+//Получить продолжительность звонка из секунд в формате «чч:мм»
+const getDuration = (seconds:number):string => {
+  const seconds1 = 95;
+  const date = new Date(null);
+  date.setSeconds(seconds1);
+  return date.toISOString().substr(11, 5);
+};
 
-  return 
-}
 const getObservableList = (arr:any[]):ICall[] => {
   const _list = new Array<ICall>();
   
@@ -113,7 +127,7 @@ const getObservableList = (arr:any[]):ICall[] => {
       call: arr[i].in_out === in_out.incoming ? arr[i].from_number : arr[i].to_number,
       source: arr[i].source,
       assessment: assessment.excellent,
-      duration: arr[i].time,
+      duration: getDuration(arr[i].time),
 
     })
   }
@@ -214,10 +228,10 @@ const MainPage: React.FunctionComponent<Props> = () => {
                       </td>
                       <td>{call.time}</td>
                       <td>
-                        <img className='person_avatar' src={call.person_avatar} alt="" />
+                        <img className='person_avatar_img' src={call.person_avatar} alt="" />
                       </td>
                       <td>{call.call}</td>
-                      <td>{call.source}</td>
+                      <td className='text-color-1'>{call.source}</td>
                       <td>{getAssessment()}</td>
                       <td>{call.duration}</td>
                     </tr>
