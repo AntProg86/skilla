@@ -12,54 +12,82 @@ $font-size-1: 15px;
 .call_list__container {
   width: 100%;
   max-width: 1440px;
+  
 }
 .call_list__container section{
   
-  padding-left: 40px;
-  padding-right: 40px;
+  // padding-left: 40px;
+  // padding-right: 40px;
+}
+
+.call_list__table_container {
+  background: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 5px 0px #E9EDF3;
+
 }
 
 .call_list__table {
   width: 100%;
-  background: white;
+  
   //padding-left: 40px;
   //padding: 0px, 40px, 0px, 40px;
 }
 
-.call_list__table thead td{
-  padding: 20px;
+.call_list__table thead tr td{
+  //padding: 20px;
+  padding-top: 24px;
+  padding-bottom: 20px;
 }
+
+.call_list__table td {
+  padding-left: 7px;
+}
+
+.call_list__table tbody td { 
+  vertical-align: middle;
+  border-top: 1px solid #F1F4F9;
+}
+.call_list__table tbody tr { 
+  height: 65px;
+}
+
+/*#region Размеры столбцов*/
 
 .call_list__table__col_1 {
   width: 4%;
-  background: red;
+  //background: red;
 }
 .call_list__table__col_2 {
   width: 7%;
-  background: green;
+  //background: green;
 }
 .call_list__table__col_3 {
   width: 9%;
-  background: pink;
+  //background: pink;
 }
 .call_list__table__col_4 {
   width: 24%;
-  background: greenyellow;
+  //background: greenyellow;
 }
 .call_list__table__col_5 {
   width: 15%;
-  background: burlywood;
+  //background: burlywood;
 }
 .call_list__table__col_6 {
   width: 33%;
-  background: brown;
+  //background: brown;
 }
 .call_list__table__col_7 {
   width: 8%;
   text-align: right;
-  background: aqua;
+  //background: aqua;
 }
+/*#endregion */
 
+/*Стили для элементов колонки «Оценка»*/
 .assessment_excellent {
   border-color: #28A879;
   background: #DBF8EF;
@@ -80,4 +108,10 @@ $font-size-1: 15px;
   border: 1px solid;
   border-radius: 4px;
   padding: 6px 8px 6px 8px;
+  display: inline-block;
+}
+
+.person_avatar {
+  width: 32px;
+  height: 32px;
 }

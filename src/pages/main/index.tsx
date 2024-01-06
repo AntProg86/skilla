@@ -73,23 +73,23 @@ const getAssessment = () => {
   
   if(_random_num === 1){
     return(
-      <span className='assessment_excellent'>
+      <div className='assessment_excellent'>
         {LocalizedStrings.excellent}
-      </span>
+      </div>
     )
   }
   if(_random_num === 2){
     return(
-      <span className='assessment_good'>
+      <div className='assessment_good'>
         {LocalizedStrings.good}
-      </span>
+      </div>
     )
   }
   if(_random_num === 3){
     return(
-      <span className='assessment_bad'>
+      <div className='assessment_bad'>
         {LocalizedStrings.bad}
-      </span>
+      </div>
     )
   }
 
@@ -177,63 +177,56 @@ const MainPage: React.FunctionComponent<Props> = () => {
       <div className='call_list__container'>
 
         <section>
-          <table className='call_list__table'>
-            <thead>
-              <tr>
-                <td className='call_list__table__col_1'>
-                  {LocalizedStrings.type}
-                </td>
-                <td className='call_list__table__col_2'>
-                  {LocalizedStrings.time}
-                </td>
-                <td className='call_list__table__col_3'>
-                  {LocalizedStrings.person}
-                </td>
-                <td className='call_list__table__col_4'>
-                  {LocalizedStrings.call}
-                </td>
-                <td className='call_list__table__col_5'>
-                  {LocalizedStrings.source}
-                </td>
-                <td className='call_list__table__col_6'>
-                  {LocalizedStrings.assessment}
-                </td>
-                <td className='call_list__table__col_7'>
-                  {LocalizedStrings.duration}
-                </td>
-              </tr>
-            </thead>
+          <div className='call_list__table_container'>
+            <table className='call_list__table'>
+              <thead>
+                <tr>
+                  <td className='call_list__table__col_1'>
+                    {LocalizedStrings.type}
+                  </td>
+                  <td className='call_list__table__col_2'>
+                    {LocalizedStrings.time}
+                  </td>
+                  <td className='call_list__table__col_3'>
+                    {LocalizedStrings.person}
+                  </td>
+                  <td className='call_list__table__col_4'>
+                    {LocalizedStrings.call}
+                  </td>
+                  <td className='call_list__table__col_5'>
+                    {LocalizedStrings.source}
+                  </td>
+                  <td className='call_list__table__col_6'>
+                    {LocalizedStrings.assessment}
+                  </td>
+                  <td className='call_list__table__col_7'>
+                    {LocalizedStrings.duration}
+                  </td>
+                </tr>
+              </thead>
 
-            <tbody>
-              {state.observableList &&
-                state.observableList.map((call)=>(
-                  <tr>
-                    <td>
-                      <img src={call.type.toString()} alt="" />
-                    </td>
-                    <td>{call.time}</td>
-                    <td>
-                      <img src={call.person_avatar} alt="" />
-                    </td>
-                    <td>{call.call}</td>
-                    <td>{call.source}</td>
-                    <td>{getAssessment()}</td>
-                    <td>{call.duration}</td>
-                  </tr>
-                ))
-              }
-
-              {/* {state.EnteredNumbers.map((num)=>(
-                <tr key={num.id}>
-                <td>{num.id}</td>
-                <td>{num.number}</td>
-                <td>{num.exactly}</td>
-                <td>{num.near}</td>
-              </tr>
-              ))} */}
-              
-            </tbody>
-          </table>
+              <tbody>
+                {state.observableList &&
+                  state.observableList.map((call)=>(
+                    <tr>
+                      <td>
+                        <img src={call.type.toString()} alt="" />
+                      </td>
+                      <td>{call.time}</td>
+                      <td>
+                        <img className='person_avatar' src={call.person_avatar} alt="" />
+                      </td>
+                      <td>{call.call}</td>
+                      <td>{call.source}</td>
+                      <td>{getAssessment()}</td>
+                      <td>{call.duration}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+         
         </section>
         <div onClick={test}>
           test
