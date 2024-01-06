@@ -231,15 +231,6 @@ const MainPage: React.FunctionComponent<Props> = () => {
         <div onClick={test}>
           test
         </div>
-
-        
-        
-        {/* <div >
-          <img className='qwerty' src={mnemosyne} alt="" />
-        </div> */}
-      {/* <div onClick={getCallList}>
-        get call list
-      </div> */}
       </div>
     </main>
   );
