@@ -10,6 +10,16 @@ export interface IStrings extends LocalizedStringsMethods{
   error: string;
   unknown_error_format: string;
   copy_to_clipboard: string;
+  type: string;
+  time: string;
+  call: string;
+  source: string;
+  assessment: string;
+  excellent: string;
+  good: string;
+  bad: string;
+  duration: string;
+  person: string;
 }
 
 // Таблица перевода
@@ -25,6 +35,17 @@ let strings: IStrings;
       error: 'Ошибка',
       unknown_error_format: 'Неизвестный формат ошибки',
       copy_to_clipboard: 'Скопировать в буфер обмена',
+      type: 'Тип',
+      time: 'Время',
+      call: 'Звонок',
+      source: 'Источник',
+      assessment: 'Оценка',
+      excellent: 'Отлично',
+      good: 'Хорошо',
+      bad: 'Плохо',
+      duration: 'Длительность',
+      person: 'Сотрудник',
+
     },
     // en: {
     //   _home: "Home",

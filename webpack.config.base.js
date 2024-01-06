@@ -82,15 +82,15 @@ module.exports = {
       {
         test: /\.(jpe?g|png|webp|gif|svg)$/i,
         type: 'asset/resource',
-        use: [
-          {
-              loader: 'file-loader',
-              options: {
-                  outputPath: 'images',
-                  name: '[name]-[sha1:hash:7].[ext]'
-              }
-          }
-      ]
+      //   use: [
+      //     {
+      //         loader: 'file-loader',
+      //         options: {
+      //             outputPath: 'images',
+      //             name: '[name]-[sha1:hash:7].[ext]'
+      //         }
+      //     }
+      // ]
       },
       // Loading fonts
       {

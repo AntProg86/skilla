@@ -1,9 +1,83 @@
+
+$font-size-1: 15px;
+
 .call_list__main {
+  width: 100%;
   background-color: #F1F4F9;
   display: flex;
   justify-content: center;
+  //background: yellow;
 }
 
 .call_list__container {
+  width: 100%;
+  max-width: 1440px;
+}
+.call_list__container section{
+  
+  padding-left: 40px;
+  padding-right: 40px;
+}
 
+.call_list__table {
+  width: 100%;
+  background: white;
+  //padding-left: 40px;
+  //padding: 0px, 40px, 0px, 40px;
+}
+
+.call_list__table thead td{
+  padding: 20px;
+}
+
+.call_list__table__col_1 {
+  width: 4%;
+  background: red;
+}
+.call_list__table__col_2 {
+  width: 7%;
+  background: green;
+}
+.call_list__table__col_3 {
+  width: 9%;
+  background: pink;
+}
+.call_list__table__col_4 {
+  width: 24%;
+  background: greenyellow;
+}
+.call_list__table__col_5 {
+  width: 15%;
+  background: burlywood;
+}
+.call_list__table__col_6 {
+  width: 33%;
+  background: brown;
+}
+.call_list__table__col_7 {
+  width: 8%;
+  text-align: right;
+  background: aqua;
+}
+
+.assessment_excellent {
+  border-color: #28A879;
+  background: #DBF8EF;
+  color: #28A879;
+}
+.assessment_good {
+  border-color: #ADBFDF;
+  background: #D8E4FB;
+  color: #122945;
+}
+.assessment_bad {
+  border-color: #EA1A4F;
+  background: #FEE9EF;
+  color: #EA1A4F;
+}
+
+.assessment_excellent, .assessment_good, .assessment_bad {
+  border: 1px solid;
+  border-radius: 4px;
+  padding: 6px 8px 6px 8px;
 }
