@@ -1,3 +1,4 @@
+import LocalizedStrings from '#src/app/localization';
 import {
   vector_incoming,
   vector_missed_call,
@@ -14,6 +15,19 @@ export enum call_status {
   successful = 'Дозвонился',
   fail = 'Не дозвонился'
 };
+
+// export const filterInOut = {
+//   all: LocalizedStrings.all_type,
+//   incoming: LocalizedStrings.incoming,
+//   outgoing: LocalizedStrings.outgoing,
+// }
+
+export enum filterInOut {
+  all = 'all_type',
+  incoming = 'incoming',
+  outgoing = 'outgoing',
+}
+
 
 export enum call_type {
   /**входящий */
@@ -34,6 +48,8 @@ export enum assessment {
 
 export interface ICall {
   
+  id: number;
+
   /**Тип 
    * -> incoming - входящий
    * -> outgoing - исходящий
@@ -54,13 +70,8 @@ export interface ICall {
   /** Источник*/
   source: string;
 
-  /**Оценка 
-   * -> excellent - отлично
-   * -> good - хорошо
-   * -> bad - плохо
-  */
-  //assessment: 'excellent' | 'good' | 'bad';
-  assessment: assessment;
+  /**Оценка */
+  assessment: () => React.JSX.Element;
 
   /**длительность */
   duration: string;

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState} from 'react';
+import React, { useEffect, useContext, useState, useCallback} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LocalizedStrings from '#src/app/localization';
 import './styles.scss';
@@ -9,6 +9,7 @@ import { postCallListFetch } from '#api/actions';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css'
 import ru from 'date-fns/locale/ru';
+import CallTable from './components/table';
 
 import {
   vector_incoming,
@@ -25,23 +26,38 @@ import {
   call_status,
   call_type,
   assessment,
+  filterInOut,
  } from './types';
 import { IconCalendar } from './pictures/svg';
+import Dropdown from './components/dropdown';
 
 type State = {
   startDate?: Date;
   endDate?: Date;
+
+  //Список звонков на экране
   observableList?: Array<ICall>;
+
+  //Фильтр по входящим и исходящим звонкам
+  filterInOutList: string[],
+  //Текущие значение фильтра
+  filterInOutSelected: string;
 };
 
 const initState = {
-  //observableList: new Array<ICall>()
+  filterInOutList: [
+    LocalizedStrings.all_type,
+    LocalizedStrings.incoming,
+    LocalizedStrings.outgoing,
+  ],
+  filterInOutSelected: LocalizedStrings.all_type,
 };
 
 type Props = {
 
 }
 
+//#region func
 //Получить иконку для столбца «Тип» (Вызов)
 const getVectorIcon = (call:ICall) => {
   let _icon;
@@ -130,12 +146,13 @@ const getObservableList = (arr:any[]):ICall[] => {
   
   for(let i=0; i<10; i++){
     _list.push({
+      id:arr[i].id,
       type: getVectorIcon(arr[i]),
       time: getTime(arr[i].date),
       person_avatar: arr[i].person_avatar,
       call: arr[i].in_out === in_out.incoming ? arr[i].from_number : arr[i].to_number,
       source: arr[i].source,
-      assessment: assessment.excellent,
+      assessment: getAssessment,
       duration: getDuration(arr[i].time),
 
     })
@@ -143,6 +160,61 @@ const getObservableList = (arr:any[]):ICall[] => {
   
   return _list;
 }
+//#endregion
+
+// const Table = React.memo(()=>{
+//   return(
+//     <div className='call_list__table_container'>
+//       <table className='call_list__table'>
+//         <thead>
+//           <tr>
+//             <td className='call_list__table__col_1'>
+//               {LocalizedStrings.type}
+//             </td>
+//             <td className='call_list__table__col_2'>
+//               {LocalizedStrings.time}
+//             </td>
+//             <td className='call_list__table__col_3'>
+//               {LocalizedStrings.person}
+//             </td>
+//             <td className='call_list__table__col_4'>
+//               {LocalizedStrings.call}
+//             </td>
+//             <td className='call_list__table__col_5'>
+//               {LocalizedStrings.source}
+//             </td>
+//             <td className='call_list__table__col_6'>
+//               {LocalizedStrings.assessment}
+//             </td>
+//             <td className='call_list__table__col_7'>
+//               {LocalizedStrings.duration}
+//             </td>
+//           </tr>
+//         </thead>
+
+//         <tbody>
+//           {observableList &&
+//             observableList.map((call)=>(
+//               <tr key={call.id}>
+//                 <td>
+//                   <img src={call.type.toString()} alt="" />
+//                 </td>
+//                 <td>{call.time}</td>
+//                 <td>
+//                   <img className='person_avatar_img' src={call.person_avatar} alt="" />
+//                 </td>
+//                 <td>{call.call}</td>
+//                 <td className='text-color-1'>{call.source}</td>
+//                 <td>{getAssessment()}</td>
+//                 <td>{call.duration}</td>
+//               </tr>
+//             ))
+//           }
+//         </tbody>
+//       </table>
+//     </div>
+//   )
+// })
 
 const MainPage: React.FunctionComponent<Props> = () => {
 
@@ -193,26 +265,52 @@ const MainPage: React.FunctionComponent<Props> = () => {
     changeState((state) => ({ 
     ...state, 
      startDate: date 
-    }))
+    }));
   };
 
   const changeEndDate = (date:Date) => {
-
+    changeState((state) => ({ 
+    ...state, 
+      endDate: date 
+    }));
   };
+
+  const changeFilterInOutSelected = (value:string) => {
+    changeState((state) => ({ 
+    ...state, 
+     filterInOutSelected:value 
+    }));
+  };
+
+  // const getObservableListByFilter = useCallback(()=>{
+  //   if(state.filterInOutSelected === filterInOut.all){
+  //     console.log('LKAJSHDLK');
+      
+  //   }
+  // },[state.filterInOutSelected]);
+
+  useEffect(()=>{
+    console.log('*-*-*-filterInOutSelected');
+    
+  },[state.filterInOutSelected]);
 
   const test = () => {
     console.log('-*-*-*-test');
-    console.log(call_type.incoming);
+    //console.log(getObservableListByFilter());
     
   };
   
-  //*-*-*-*-*-*-*-*-*-*-*-*-Render
+  //*-*-*-*-*-*-*-*-*-*-*-*-Render 
   return (
     <main className='call_list__main'>
       <div className='call_list__container'>
         <section className='call_list__toolbar'>
-          <div>
-            Все типы
+          <div className='dropdown_container'>
+            <Dropdown
+              options={state.filterInOutList}
+              selected={state.filterInOutSelected}
+              setSelected={changeFilterInOutSelected}
+            />
           </div>
           <div className='date_picker_container'>
             <p>{LocalizedStrings.date_from}</p>
@@ -238,56 +336,10 @@ const MainPage: React.FunctionComponent<Props> = () => {
           </div>
         </section>
         <section>
-          <div className='call_list__table_container'>
-            <table className='call_list__table'>
-              <thead>
-                <tr>
-                  <td className='call_list__table__col_1'>
-                    {LocalizedStrings.type}
-                  </td>
-                  <td className='call_list__table__col_2'>
-                    {LocalizedStrings.time}
-                  </td>
-                  <td className='call_list__table__col_3'>
-                    {LocalizedStrings.person}
-                  </td>
-                  <td className='call_list__table__col_4'>
-                    {LocalizedStrings.call}
-                  </td>
-                  <td className='call_list__table__col_5'>
-                    {LocalizedStrings.source}
-                  </td>
-                  <td className='call_list__table__col_6'>
-                    {LocalizedStrings.assessment}
-                  </td>
-                  <td className='call_list__table__col_7'>
-                    {LocalizedStrings.duration}
-                  </td>
-                </tr>
-              </thead>
-
-              <tbody>
-                {state.observableList &&
-                  state.observableList.map((call)=>(
-                    <tr>
-                      <td>
-                        <img src={call.type.toString()} alt="" />
-                      </td>
-                      <td>{call.time}</td>
-                      <td>
-                        <img className='person_avatar_img' src={call.person_avatar} alt="" />
-                      </td>
-                      <td>{call.call}</td>
-                      <td className='text-color-1'>{call.source}</td>
-                      <td>{getAssessment()}</td>
-                      <td>{call.duration}</td>
-                    </tr>
-                  ))
-                }
-              </tbody>
-            </table>
-          </div>
-         
+          <CallTable 
+            observableList={state.observableList} 
+            filterInOut={state.filterInOutSelected}
+          />
         </section>
         <div onClick={test}>
           test

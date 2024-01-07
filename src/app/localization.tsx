@@ -23,6 +23,9 @@ export interface IStrings extends LocalizedStringsMethods{
   script_not_used: string;
   date_from: string;
   date_to: string;
+  all_type: string;
+  incoming: string;
+  outgoing: string;
 }
 
 // Таблица перевода
@@ -51,7 +54,9 @@ let strings: IStrings;
       script_not_used: 'Скрипт не использован',
       date_from: 'с :',
       date_to: 'по :',
-
+      all_type: 'Все типы',
+      incoming: 'Входящие',
+      outgoing: 'Исходящие',
     },
     // en: {
     //   _home: "Home",

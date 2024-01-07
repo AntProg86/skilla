@@ -1,0 +1,44 @@
+.dropdow {
+  //width: 400px;
+  margin: 0px auto;
+  position: relative;
+  user-select: none;
+}
+
+.dropdow .dropdow-btn {
+  padding: 5px 7px;
+  background: inherit;
+  color: #5E7793;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.dropdow .dropdow-content {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  padding: 4px, 0px, 4px, 0px;
+  background: #fff;
+  font-weight: 500;
+  //color: #ffffff;
+  width: 100%;
+  box-shadow: 0px 4px 20px 0px #00000014;
+  border-radius: 8px;
+
+}
+
+.dropdow .dropdow-content .dropdow-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dropdow .dropdow-content .dropdow-item:hover {
+  background: #DEE4FF;
+}
+
+.current-option-color {
+  color: #015EF5;
+}
