@@ -7,13 +7,22 @@ type getByIdFetch = {
   id:number;
 }
 
-export const postCallListFetch = createAsyncThunk<any, getByIdFetch>(
+export const postCallListFetch = createAsyncThunk<any, any>(
   '/CallListFetch/fetch',
   async ({
-    id
+    date_start,
+    date_end,
+    in_out,
+    sort_by
   }) => {
     return await ServiceApi.postCallList( 
-      api_addresses.skilla_call_list
+      api_addresses.skilla_call_list,
+      {
+        date_start,
+        date_end,
+        in_out,
+        sort_by
+      }
     );
   }
 );

@@ -119,7 +119,7 @@ class serviceApi {
     return errorMessage;
   }
 
-  postCallList = async (address:string) => {  
+  postCallList = async (address:string, args? : any) => {  
     
     // Получаем заголовки и свойства запроса
     //let requestOptions = this.requestOptionsGet(token);
@@ -133,10 +133,17 @@ class serviceApi {
     // Определяем метод запроса
     requestOptions["method"] = 'POST';
 
-    // console.log('*-*-*---*requestOptions');
-    // console.log(requestOptions);
+    console.log('*-*-*---*requestOptions');
+    console.log(args);
 
-    const res_resource = await this.getResource(`${address}`, requestOptions);
+    const queries = new Array();
+    for(var key in args) {
+      args[key] === null ? queries.push(`${key}:${args[key]}`) : queries.push(`${key}=${args[key]}`);
+    }
+    
+    const queryString = queries.join('&');
+    const res_resource = await this.getResource(`${address+'?'}${queryString}`, requestOptions);
+    //const res_resource = await this.getResource(`${address}`, requestOptions);
     const res = await res_resource.res_body;
             
     // Проверяем наличие ошибок и если ошибки есть, генерируем exception

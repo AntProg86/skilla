@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState, useRef} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LocalizedStrings from '#src/app/localization';
 import './styles.scss';
-import { useClickOutside } from '../../../../utils/hooks';
+import { useClickOutside } from '../../../../functions/hooks';
 import { ArrowDown, ArrowUP } from '../../pictures/svg';
 
 type Props = {

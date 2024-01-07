@@ -77,25 +77,6 @@ const Application: React.FunctionComponent<Props> = () => {
         doFetch: doFetch,
       }} >
     <>
-      <header>
-        <ul>
-          <li>
-            {/* <Link to="/">{LocalizedStrings._home}</Link> */}
-            <Link to="/">{LocalizedStrings._home}</Link>
-          </li>
-          &nbsp;||&nbsp;
-          <li>
-            {/* <Link to="/about">{LocalizedStrings._about}</Link> */}
-            <Link to="/about">{LocalizedStrings._about}</Link>
-          </li>
-          &nbsp;||&nbsp;
-          <li>
-          </li>
-        </ul>
-      </header>
-
-      <hr />
-
       <ErrorAbsolutePage />
       
       {/* Прогресс бар в самом верху страницы. Показывает моменты обращения к API */}

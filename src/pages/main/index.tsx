@@ -30,6 +30,7 @@ import {
  } from './types';
 import { IconCalendar } from './pictures/svg';
 import Dropdown from './components/dropdown';
+import { getDate } from '#src/functions/date';
 
 type State = {
   startDate?: Date;
@@ -162,60 +163,6 @@ const getObservableList = (arr:any[]):ICall[] => {
 }
 //#endregion
 
-// const Table = React.memo(()=>{
-//   return(
-//     <div className='call_list__table_container'>
-//       <table className='call_list__table'>
-//         <thead>
-//           <tr>
-//             <td className='call_list__table__col_1'>
-//               {LocalizedStrings.type}
-//             </td>
-//             <td className='call_list__table__col_2'>
-//               {LocalizedStrings.time}
-//             </td>
-//             <td className='call_list__table__col_3'>
-//               {LocalizedStrings.person}
-//             </td>
-//             <td className='call_list__table__col_4'>
-//               {LocalizedStrings.call}
-//             </td>
-//             <td className='call_list__table__col_5'>
-//               {LocalizedStrings.source}
-//             </td>
-//             <td className='call_list__table__col_6'>
-//               {LocalizedStrings.assessment}
-//             </td>
-//             <td className='call_list__table__col_7'>
-//               {LocalizedStrings.duration}
-//             </td>
-//           </tr>
-//         </thead>
-
-//         <tbody>
-//           {observableList &&
-//             observableList.map((call)=>(
-//               <tr key={call.id}>
-//                 <td>
-//                   <img src={call.type.toString()} alt="" />
-//                 </td>
-//                 <td>{call.time}</td>
-//                 <td>
-//                   <img className='person_avatar_img' src={call.person_avatar} alt="" />
-//                 </td>
-//                 <td>{call.call}</td>
-//                 <td className='text-color-1'>{call.source}</td>
-//                 <td>{getAssessment()}</td>
-//                 <td>{call.duration}</td>
-//               </tr>
-//             ))
-//           }
-//         </tbody>
-//       </table>
-//     </div>
-//   )
-// })
-
 const MainPage: React.FunctionComponent<Props> = () => {
 
   const _appContext = useContext(AppContext);
@@ -223,8 +170,8 @@ const MainPage: React.FunctionComponent<Props> = () => {
   const [state, changeState] = useState<State>(initState);
 
   useEffect(()=>{
-    console.log('*-*-*-*-*useEffect');
-    console.log(data);
+    // console.log('*-*-*-*-*useEffect');
+    // console.log(data);
     
     changeState((state) => ({ 
     ...state, 
@@ -233,6 +180,19 @@ const MainPage: React.FunctionComponent<Props> = () => {
     
   },[]);
 
+  //Получить список по датам
+  useEffect(()=>{
+    if(state.startDate && state.endDate && state.startDate <= state.endDate){
+      console.log('*-*-*-*-Date');
+      getCallList()
+    }
+  },[state.startDate, state.endDate]);
+  
+  useEffect(()=>{
+    console.log('*-*-*-filterInOutSelected');
+    
+  },[state.filterInOutSelected]);
+
   const showError = () => {
     //console.log('*-*-*-*showError');
     dispatch(ActionSetErrorMessageAbsolute('some error'))
@@ -240,18 +200,30 @@ const MainPage: React.FunctionComponent<Props> = () => {
   };
 
   const getCallList = () => {
-    console.log('*-*-*-**getCallList');
-    _appContext.doFetch(postCallListFetch, {})
+    //console.log('*-*-*-**getCallList');
+    _appContext.doFetch(postCallListFetch,
+       {
+        date_start: getDate(state.startDate), 
+        date_end: getDate(state.endDate),
+        in_out: 0,
+        sort_by: 'duration' // date и duration
+      })
     .then((data:any) => {   
       const {payload, error} = data;
-      console.log('*-*-*--*-*-*data');
-      console.log(data);
+      // console.log('*-*-*--*-*-*data');
+      // console.log(data);
       
       if (payload){
         
-        console.log('*-*-*-*-*payload');
-        console.log(payload);
-        
+        // console.log('*-*-*-*-*payload');
+        // console.log(payload);
+        if(payload.total_rows > 0){
+
+          changeState((state) => ({ 
+          ...state, 
+           observableList: getObservableList(payload.results) 
+          }));
+        }
       }
       
       // Очищаем сообщение
@@ -289,13 +261,10 @@ const MainPage: React.FunctionComponent<Props> = () => {
   //   }
   // },[state.filterInOutSelected]);
 
-  useEffect(()=>{
-    console.log('*-*-*-filterInOutSelected');
-    
-  },[state.filterInOutSelected]);
-
   const test = () => {
     console.log('-*-*-*-test');
+    //console.log(getDate(state.startDate));
+    getCallList()
     //console.log(getObservableListByFilter());
     
   };
