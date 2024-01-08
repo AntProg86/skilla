@@ -174,6 +174,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
     // console.log('*-*-*-*-*useEffect');
     // console.log(data);
     //test
+    //more test
     
     changeState((state) => ({ 
     ...state, 
