@@ -11,13 +11,6 @@ import 'react-datepicker/dist/react-datepicker.css'
 import ru from 'date-fns/locale/ru';
 import CallTable from './components/table';
 
-import {
-  vector_incoming,
-  vector_missed_call,
-  vector_missed,
-  vector_outgoing,
-} from './pictures/pictures';
-
 import data from '../../data/data.json'
 
 import { 
@@ -133,20 +126,12 @@ const getAssessment = ():React.JSX.Element => {
   )
 };
 
-//Получить продолжительность звонка из секунд в формате «чч:мм»
-const getDuration = (seconds:number):string => {
-  const seconds1 = 95;
-  const date = new Date(null);
-  date.setSeconds(seconds1);
-  return date.toISOString().substr(11, 5);
-};
-
 //Получить список, который видит пользователь
 //arr - массив из API
 const getObservableList = (arr:any[]):ICall[] => {
   const _list = new Array<ICall>();
   
-  for(let i=0; i<50; i++){
+  for(let i=0; i<arr.length; i++){
     _list.push({
       id:arr[i].id,
       in_out: arr[i].in_out,
@@ -179,7 +164,9 @@ const MainPage: React.FunctionComponent<Props> = () => {
     
     changeState((state) => ({ 
     ...state, 
-     observableList: getObservableList(data.results)
+    startDate: new Date(),
+    endDate: new Date()
+     //observableList: getObservableList(data.results)
     }))
     
   },[]);
@@ -187,15 +174,10 @@ const MainPage: React.FunctionComponent<Props> = () => {
   //Получить список по датам
   useEffect(()=>{
     if(state.startDate && state.endDate && state.startDate <= state.endDate){
-      console.log('*-*-*-*-Date');
+      //console.log('*-*-*-*-Date');
       getCallList()
     }
   },[state.startDate, state.endDate]);
-  
-  // useEffect(()=>{
-  //   console.log('*-*-*-filterInOutSelected');
-    
-  // },[state.filterInOutSelected]);
 
   const showError = () => {
     //console.log('*-*-*-*showError');
@@ -203,6 +185,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
     
   };
 
+  //Получить список звонков с сервера
   const getCallList = () => {
     //console.log('*-*-*-**getCallList');
     _appContext.doFetch(postCallListFetch,
@@ -221,13 +204,19 @@ const MainPage: React.FunctionComponent<Props> = () => {
         
         // console.log('*-*-*-*-*payload');
         // console.log(payload);
-        if(payload.total_rows > 0){
+        
+        changeState((state) => ({ 
+        ...state, 
+          observableList: getObservableList(payload.results) 
+        }));
 
-          changeState((state) => ({ 
-          ...state, 
-           observableList: getObservableList(payload.results) 
-          }));
-        }
+        // if(payload.total_rows > 0){
+
+        //   changeState((state) => ({ 
+        //   ...state, 
+        //    observableList: getObservableList(payload.results) 
+        //   }));
+        // }
       }
       
       // Очищаем сообщение
@@ -237,6 +226,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
     });
   };
 
+  //Пользователь изменил дату «С»
   const changeStartDate = (date:Date) => {
     changeState((state) => ({ 
     ...state, 
@@ -244,6 +234,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }));
   };
 
+  //Пользователь изменил дату «По»
   const changeEndDate = (date:Date) => {
     changeState((state) => ({ 
     ...state, 
@@ -251,6 +242,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }));
   };
 
+  //Пользователь изменил фильтр: Все / Входящие / Исходящие
   const changeFilterInOutSelected = (value:string) => {
     changeState((state) => ({ 
     ...state, 

@@ -75,6 +75,10 @@ body {
   height: 65px;
 }
 
+.call_list__table tbody tr:hover { 
+  background: #F1F4F9;
+}
+
 /*#region Размеры столбцов*/
 
 .call_list__table__col_1 {

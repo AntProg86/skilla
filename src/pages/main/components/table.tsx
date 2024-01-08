@@ -9,7 +9,7 @@ type Props = {
 }
 
 const CallTable: React.FunctionComponent<Props> = ({observableList}) => {
-  console.log('*-*--*render Table');
+  //console.log('*-*--*render Table');
   
   return(
     <div className='call_list__table_container'>
