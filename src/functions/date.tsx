@@ -19,3 +19,12 @@ export const addDays = (date: Date, value: number) => {
       diff = (offset - d2.getTimezoneOffset()) * 60000;
   return diff ? new Date(d2.getTime() - diff) : d2;
 }
+
+//получить время формата: чч:мм:сс | мм:сс из секунд
+//return [ '00:01', '00:01:35' ]
+export const getTimeFromSeconds = (sec:number) => {
+  let frm = new Intl.DateTimeFormat('ru', {minute: '2-digit', second: '2-digit'});
+  let dat = new Date(null);
+  dat.setSeconds(sec + dat.getTimezoneOffset() * 60);
+  return [frm.format(dat), dat.toLocaleTimeString()];
+};

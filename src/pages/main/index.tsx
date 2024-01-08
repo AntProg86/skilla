@@ -30,7 +30,7 @@ import {
  } from './types';
 import { IconCalendar } from './pictures/svg';
 import Dropdown from './components/dropdown';
-import { getDate } from '#src/functions/date';
+import { getDate, getTimeFromSeconds } from '#src/functions/date';
 import MusicPlayer from './components/music-player';
 
 type State = {
@@ -156,7 +156,7 @@ const getObservableList = (arr:any[]):ICall[] => {
       call: arr[i].in_out === in_out.incoming ? arr[i].from_number : arr[i].to_number,
       source: arr[i].source,
       assessment: getAssessment,
-      duration: getDuration(arr[i].time),
+      duration: getTimeFromSeconds(arr[i].time)[0],
     })
   }
   
@@ -328,9 +328,6 @@ const MainPage: React.FunctionComponent<Props> = () => {
             observableList={state.observableList ? getObservableListByFilter : undefined}
           />
         </section>
-        <div onClick={test}>
-          test
-        </div>
       </div>
     </main>
   );
