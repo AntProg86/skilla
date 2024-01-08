@@ -1,0 +1,79 @@
+.music_player__component {
+  background-color: #EAF0FA;
+  //width: 300px;
+  width: 100%;
+  max-width: 300px;
+  margin: 1em auto;
+  //padding-bottom: 2em;
+  //border: 0.1px solid black;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 3px;
+}
+
+.music_player__range {
+  width: 100%;
+  text-align: center;
+}
+
+.musicCover {
+  border-radius: 10%;
+}
+
+.music_player__closeButton{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.music_player__closeButton:hover path{
+  fill: #002CFB;
+}
+
+.music_player__closeButton:hover {
+  cursor: pointer;
+}
+
+.music_player__downloadButton:hover path{
+  fill: #002CFB;
+}
+.music_player__downloadButton:hover{
+  cursor: pointer;
+}
+
+.music_player__playButton {
+  background: none;
+  border: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.subTitle {
+  margin-top: -1em;
+  color: #4f4f4f;
+}
+
+.music_player__time {
+  // margin: 0 auto;
+  // width: 80%;
+  // display: flex;
+  // justify-content: space-between;
+  color: #828282;
+  font-size: smaller;
+}
+
+.music_player__timeline {
+  width: 80%;
+  background-color: #27ae60;
+}
+
+input[type="range"] {
+  background-color: #27ae60;
+}
+
+@media (max-width: 900px) {
+  .component {
+    width: 50%;
+  }
+}

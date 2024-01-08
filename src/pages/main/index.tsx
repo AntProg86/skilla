@@ -31,6 +31,7 @@ import {
 import { IconCalendar } from './pictures/svg';
 import Dropdown from './components/dropdown';
 import { getDate } from '#src/functions/date';
+import MusicPlayer from './components/music-player';
 
 type State = {
   startDate?: Date;
@@ -321,6 +322,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
             />
           </div>
         </section>
+        
         <section>
           <CallTable 
             observableList={state.observableList ? getObservableListByFilter : undefined}

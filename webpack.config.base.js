@@ -80,7 +80,7 @@ module.exports = {
       },
       // Loading pictures
       {
-        test: /\.(jpe?g|png|webp|gif|svg)$/i,
+        test: /\.(jpe?g|png|webp|gif|svg|mp3)$/i,
         type: 'asset/resource',
       //   use: [
       //     {
