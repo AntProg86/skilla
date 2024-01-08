@@ -5,12 +5,11 @@ import LocalizedStrings from '#src/app/localization';
 import { ICall } from '../types';
 
 type Props = {
-  observableList:Array<ICall>;
-  filterInOut: string;
+  observableList?:()=>Array<ICall>;
 }
 
-const CallTable: React.FunctionComponent<Props> = ({observableList,filterInOut}) => {
-  console.log('*-*--*render');
+const CallTable: React.FunctionComponent<Props> = ({observableList}) => {
+  console.log('*-*--*render Table');
   
   return(
     <div className='call_list__table_container'>
@@ -18,7 +17,7 @@ const CallTable: React.FunctionComponent<Props> = ({observableList,filterInOut})
         <thead>
           <tr>
             <td className='call_list__table__col_1'>
-              {LocalizedStrings.type}{filterInOut}
+              {LocalizedStrings.type}
             </td>
             <td className='call_list__table__col_2'>
               {LocalizedStrings.time}
@@ -43,7 +42,7 @@ const CallTable: React.FunctionComponent<Props> = ({observableList,filterInOut})
 
         <tbody>
           {observableList &&
-            observableList.map((call)=>(
+            observableList().map((call)=>(
               <tr key={call.id}>
                 <td>
                   <img src={call.type.toString()} alt="" />

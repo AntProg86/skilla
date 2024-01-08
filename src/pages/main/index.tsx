@@ -145,9 +145,10 @@ const getDuration = (seconds:number):string => {
 const getObservableList = (arr:any[]):ICall[] => {
   const _list = new Array<ICall>();
   
-  for(let i=0; i<10; i++){
+  for(let i=0; i<50; i++){
     _list.push({
       id:arr[i].id,
+      in_out: arr[i].in_out,
       type: getVectorIcon(arr[i]),
       time: getTime(arr[i].date),
       person_avatar: arr[i].person_avatar,
@@ -155,7 +156,6 @@ const getObservableList = (arr:any[]):ICall[] => {
       source: arr[i].source,
       assessment: getAssessment,
       duration: getDuration(arr[i].time),
-
     })
   }
   
@@ -188,10 +188,10 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }
   },[state.startDate, state.endDate]);
   
-  useEffect(()=>{
-    console.log('*-*-*-filterInOutSelected');
+  // useEffect(()=>{
+  //   console.log('*-*-*-filterInOutSelected');
     
-  },[state.filterInOutSelected]);
+  // },[state.filterInOutSelected]);
 
   const showError = () => {
     //console.log('*-*-*-*showError');
@@ -254,12 +254,29 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }));
   };
 
-  // const getObservableListByFilter = useCallback(()=>{
-  //   if(state.filterInOutSelected === filterInOut.all){
-  //     console.log('LKAJSHDLK');
-      
-  //   }
-  // },[state.filterInOutSelected]);
+  //фильтр: Показать все / Входящие / Исходящие
+  const getObservableListByFilter = useCallback(()=>{
+    
+    let _arr: ICall[] = new Array<ICall>();
+
+    //Показать все
+    if(state.filterInOutSelected === state.filterInOutList[0]){
+      _arr = state.observableList
+    }
+
+    //Входящие
+    if(state.filterInOutSelected === state.filterInOutList[1]){
+      _arr = state.observableList.filter(call => call.in_out === in_out.incoming)
+    }
+
+    //Исходящие
+    if(state.filterInOutSelected === state.filterInOutList[2]){
+      _arr = state.observableList.filter(call => call.in_out === in_out.outgoing)
+    }
+
+    return _arr;
+
+  },[state.filterInOutSelected, state.observableList]);
 
   const test = () => {
     console.log('-*-*-*-test');
@@ -306,8 +323,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
         </section>
         <section>
           <CallTable 
-            observableList={state.observableList} 
-            filterInOut={state.filterInOutSelected}
+            observableList={state.observableList ? getObservableListByFilter : undefined}
           />
         </section>
         <div onClick={test}>
