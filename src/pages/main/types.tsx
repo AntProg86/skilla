@@ -79,6 +79,11 @@ export interface ICall {
   /**Признак входящего или исходящего звонка */
   in_out: in_out;
   
+  /**id записи звонка */
+  record: string;
+
+  /**id партнера */
+  partnership_id: string;
   //--------------------------------------
   
 

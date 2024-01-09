@@ -22,6 +22,22 @@ class serviceApi {
     })
   };
 
+  getResourceArrayBuffer = async (url:string, requestOptions:object, progressBarShow:boolean = true) => {
+
+    return await fetch(`${url}`, requestOptions).then(result => {
+      console.log('-*-*--*--result');
+      console.log(result);
+      
+      //Here body is not ready yet, throw promise
+      if (!result.ok) throw result;
+        return {res_body: result.blob().then(buffer => buffer ? buffer : []), res_status: result?.status};
+    })
+    .catch(error => {
+      //Here is still promise
+      return {res_body: error, res_status: error?.status};
+    })
+  }
+
   getRequestOptions  = (token?:string) => {
     let requestOptions = {
       method: 'GET',
@@ -133,8 +149,8 @@ class serviceApi {
     // Определяем метод запроса
     requestOptions["method"] = 'POST';
 
-    console.log('*-*-*---*requestOptions');
-    console.log(args);
+    // console.log('*-*-*---*requestOptions');
+    // console.log(args);
 
     const queries = new Array();
     for(var key in args) {
@@ -143,6 +159,44 @@ class serviceApi {
     
     const queryString = queries.join('&');
     const res_resource = await this.getResource(`${address+'?'}${queryString}`, requestOptions);
+    //const res_resource = await this.getResource(`${address}`, requestOptions);
+    const res = await res_resource.res_body;
+            
+    // Проверяем наличие ошибок и если ошибки есть, генерируем exception
+    const errorMessage = await this.isError(res, address, res_resource);
+    if (errorMessage) throw errorMessage;
+
+    return res
+  }
+
+  //Получить запись звонка
+  postRecord = async (address:string, args? : any) => {  
+    
+    // Получаем заголовки и свойства запроса
+    //let requestOptions = this.requestOptionsGet(token);
+    let requestOptions = {
+      // method: 'GET',
+      headers: {
+        //Accept: 'application/json', // Ответ приходит в виде json
+        'Authorization': 'Bearer testtoken',
+        'Content-type': 'audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3',
+        'Content-Transfer-Encoding': 'binary',
+        'Content-Disposition': 'filename="record.mp3"'
+      },
+    } as any;
+    // Определяем метод запроса
+    requestOptions["method"] = 'POST';
+
+    // console.log('*-*-*---*requestOptions');
+    // console.log(args);
+
+    const queries = new Array();
+    for(var key in args) {
+      args[key] === null ? queries.push(`${key}:${args[key]}`) : queries.push(`${key}=${args[key]}`);
+    }
+    
+    const queryString = queries.join('&');
+    const res_resource = await this.getResourceArrayBuffer(`${address+'?'}${queryString}`, requestOptions);
     //const res_resource = await this.getResource(`${address}`, requestOptions);
     const res = await res_resource.res_body;
             

@@ -26,3 +26,19 @@ export const postCallListFetch = createAsyncThunk<any, any>(
     );
   }
 );
+
+export const postRecordFetch = createAsyncThunk<any, any>(
+  '/RecordFetch/fetch',
+  async ({
+    record,
+    partnership_id,
+  }) => {
+    return await ServiceApi.postRecord( 
+      api_addresses.skilla_record,
+      {
+        record,
+        partnership_id,
+      }
+    );
+  }
+);

@@ -5,7 +5,7 @@ import './styles.scss';
 import { AppContext } from '#src/app/context';
 import { getCurrencyRateFetch, getPlanetFetch } from '#src/app/actions';
 import { ActionSetErrorMessageAbsolute } from '#src/components/errorAbsolute/reducer';
-import { postCallListFetch } from '#api/actions';
+import { postCallListFetch, postRecordFetch } from '#api/actions';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css'
 import ru from 'date-fns/locale/ru';
@@ -37,6 +37,8 @@ type State = {
   filterInOutList: string[],
   //Текущие значение фильтра
   filterInOutSelected: string;
+
+  track?: any;
 };
 
 const initState = {
@@ -142,8 +144,14 @@ const getObservableList = (arr:any[]):ICall[] => {
       source: arr[i].source,
       assessment: getAssessment,
       duration: getTimeFromSeconds(arr[i].time)[0],
+
+      record: arr[i].record,
+      partnership_id: arr[i].partnership_id,
     })
   }
+  
+  console.log('-*-*-*-*--*_list');
+  console.log(_list);
   
   return _list;
 }
@@ -277,8 +285,71 @@ const MainPage: React.FunctionComponent<Props> = () => {
   const test = () => {
     console.log('-*-*-*-test');
     //console.log(getDate(state.startDate));
-    getCallList()
+    //getCallList()
     //console.log(getObservableListByFilter());
+    //console.log(state.observableList);
+    
+    _appContext.doFetch(postRecordFetch,
+      {
+        record: 'MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow', 
+        partnership_id: '578',
+     })
+   .then((data:any) => {   
+     const {payload, error} = data;
+
+    //  console.log('*-*-*--*-*-*data');
+    //  console.log(data);
+    //  const track_1 = require("./components/music-player/04. Раб страха.mp3");
+     if (payload){
+      // const ctx = new AudioContext()
+      // let audio;
+      // const url = URL.createObjectURL(payload);
+      //   //new Audio(url).play();
+      
+      //   console.log(url + '.mp3');
+      //   const link = document.createElement('a');
+      // link.href = URL.createObjectURL(payload);
+      // link.download = 'zxczxc.mp3';
+      // link.click();
+        
+      // changeState((state) => ({ 
+      // ...state, 
+      //   track: track_1
+      // }));
+      // ctx.decodeAudioData(payload).then((decodedAudio)=>{
+
+      //   console.log('*-*-*decodedAudio');
+      //   console.log(decodedAudio);
+        
+        
+        
+      //   changeState((state) => ({ 
+      //     ...state, 
+      //       track: decodedAudio
+      //     }));
+      // })
+      
+      
+      //   console.log('*-*-*-*-*payload');
+      //  console.log(qwe.);
+       
+       
+
+       // if(payload.total_rows > 0){
+
+       //   changeState((state) => ({ 
+       //   ...state, 
+       //    observableList: getObservableList(payload.results) 
+       //   }));
+       // }
+     }
+     
+     // Очищаем сообщение
+     //dispatch(ActionMainLoadPanelMessage(''));
+     // Скрываем индикацию загрузки на весь экран
+     //dispatch(ActionMainLoadPanelShow(false));
+   });
+    
     
   };
   
@@ -287,6 +358,8 @@ const MainPage: React.FunctionComponent<Props> = () => {
     <main className='call_list__main'>
       <div className='call_list__container'>
         <section className='call_list__toolbar'>
+          {/* <div onClick={test}>test</div> */}
+          {/* <MusicPlayer track={state.track}/> */}
           <div className='dropdown_container'>
             <Dropdown
               options={state.filterInOutList}
