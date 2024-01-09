@@ -140,7 +140,7 @@ const getObservableList = (arr:any[]):ICall[] => {
       type: getVectorIcon(arr[i]),
       time: getTime(arr[i].date),
       person_avatar: arr[i].person_avatar,
-      call: arr[i].in_out === in_out.incoming ? arr[i].from_number : arr[i].to_number,
+      call: arr[i].to_number,//arr[i].in_out === in_out.incoming ? arr[i].from_number : arr[i].to_number,
       source: arr[i].source,
       assessment: getAssessment,
       duration: getTimeFromSeconds(arr[i].time)[0],
