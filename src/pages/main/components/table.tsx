@@ -6,7 +6,7 @@ import { ICall } from '../types';
 
 type Props = {
   children: any;
-  observableList?:()=>Array<ICall>;
+  observableList?:Array<ICall>;
 }
 
 const CallTable: React.FunctionComponent<Props> = ({observableList, children}) => {
@@ -23,7 +23,7 @@ const CallTable: React.FunctionComponent<Props> = ({observableList, children}) =
 
         <tbody>
           {observableList &&
-            observableList().map((call)=>(
+            observableList.map((call)=>(
               <tr key={call.id}>
                 <td>
                   <img src={call.type.toString()} alt="" />

@@ -158,6 +158,10 @@ class serviceApi {
     }
     
     const queryString = queries.join('&');
+    
+    // console.log('*-*-*-*-*-*queryString');
+    // console.log(queryString);
+
     const res_resource = await this.getResource(`${address+'?'}${queryString}`, requestOptions);
     //const res_resource = await this.getResource(`${address}`, requestOptions);
     const res = await res_resource.res_body;

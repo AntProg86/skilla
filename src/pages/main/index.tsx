@@ -34,7 +34,7 @@ type State = {
   observableList?: Array<ICall>;
 
   //Фильтр по входящим и исходящим звонкам
-  filterInOutList: string[],
+  //filterInOutList: string[],
   
   //Текущие значение фильтра
   filterInOutSelected: string;
@@ -43,14 +43,23 @@ type State = {
   filterDurationSelected?: string;
 
   track?: any;
+
+  //Признак входящего или исходящего звонка
+  // 1 - входящий звонок
+  // 0 - исходящий звонок
+  // пусто - все звонки
+  in_out?: number;
+
+  //Сортировка, возможные значения: date и duration
+  sort_by?: undefined | 'duration' | 'date';
 };
 
 const initState = {
-  filterInOutList: [
-    LocalizedStrings.all_type,
-    LocalizedStrings.incoming,
-    LocalizedStrings.outgoing,
-  ],
+  // filterInOutList: [
+  //   LocalizedStrings.all_type,
+  //   LocalizedStrings.incoming,
+  //   LocalizedStrings.outgoing,
+  // ],
   filterInOutSelected: LocalizedStrings.all_type,
 };
 
@@ -160,10 +169,17 @@ const getObservableList = (arr:any[]):ICall[] => {
   return _list;
 };
 
-//Значения для сортировки под или продолжительности
+//Значения для сортировки по дате или продолжительности
 const durationFilterList = [
   LocalizedStrings.sort_by_date,
   LocalizedStrings.sort_by_duration
+];
+
+//Значения для сортировки входящие/исходящие
+const filterInOutList = [
+  LocalizedStrings.all_type,
+  LocalizedStrings.incoming,
+  LocalizedStrings.outgoing,
 ];
 //#endregion
 
@@ -195,7 +211,12 @@ const MainPage: React.FunctionComponent<Props> = () => {
       //console.log('*-*-*-*-Date');
       getCallList()
     }
-  },[state.startDate, state.endDate]);
+  },[
+    state.startDate,
+    state.endDate,
+    state.in_out,
+    state.sort_by,
+  ]);
 
   const showError = () => {
     //console.log('*-*-*-*showError');
@@ -205,13 +226,15 @@ const MainPage: React.FunctionComponent<Props> = () => {
 
   //Получить список звонков с сервера
   const getCallList = () => {
-    //console.log('*-*-*-**getCallList');
+    console.log('*-*-*-**getCallList');
+    console.log(state.sort_by);
+    
     _appContext.doFetch(postCallListFetch,
        {
         date_start: getDate(state.startDate), 
         date_end: getDate(state.endDate),
-        in_out: 0,
-        sort_by: 'duration' // date и duration
+        in_out: state.in_out === undefined ? null : state.in_out, 
+        sort_by: state.sort_by === undefined ? null : state.sort_by
       })
     .then((data:any) => {   
       const {payload, error} = data;
@@ -260,11 +283,47 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }));
   };
 
+  //Получить значение для переменной «state.in_out»
+  const getInOutValue = (filterInOutSelected: string ) => {
+
+    //Показать все
+    if(filterInOutSelected === filterInOutList[0]){
+      return undefined;
+    }
+
+    //Входящие
+    if(filterInOutSelected === filterInOutList[1]){
+      return 1;
+    }
+
+    //Исходящие
+    if(filterInOutSelected === filterInOutList[2]){
+      return 0;
+    }
+  };
+
+  //Получить значение для переменной «state.sort_by
+  const getFilterDurationValue = (filterDurationSelected: string): undefined | 'duration' | 'date' => {
+
+    //продолжительность
+    if(filterDurationSelected === durationFilterList[0]){
+      return 'date';
+    }
+
+    //дата
+    if(filterDurationSelected === durationFilterList[1]){
+      return 'duration';
+    }
+    
+    return undefined;
+  }
+
   //Пользователь изменил фильтр: Все / Входящие / Исходящие
   const changeFilterInOutSelected = (value:string) => {
     changeState((state) => ({ 
     ...state, 
-     filterInOutSelected:value 
+     filterInOutSelected:value,
+     in_out: getInOutValue(value)
     }));
   };
 
@@ -272,14 +331,17 @@ const MainPage: React.FunctionComponent<Props> = () => {
   const changeFilterDurationDate = (value:string) => {
     changeState((state) => ({ 
     ...state, 
-     filterDurationSelected:value 
+     filterDurationSelected:value,
+     sort_by: getFilterDurationValue(value)
     }));
   };
 
+  //Сбросить фильтр «Входящие/ исходящие»
   const resetFilter = () => {
     changeState((state) => ({ 
       ...state, 
-      filterInOutSelected: state.filterInOutList[0] 
+      filterInOutSelected: filterInOutList[0],
+      in_out: undefined
     }));
   };
 
@@ -287,35 +349,11 @@ const MainPage: React.FunctionComponent<Props> = () => {
   const resetDurationDateFilter = () => {
     changeState((state) => ({ 
     ...state, 
-      filterDurationSelected:undefined 
+      filterDurationSelected:undefined, 
+      sort_by: undefined
     }));
   };
 
-  //фильтр: Показать все / Входящие / Исходящие
-  const getObservableListByFilter = useCallback(()=>{
-    
-    let _arr: ICall[] = new Array<ICall>();
-
-    //Показать все
-    if(state.filterInOutSelected === state.filterInOutList[0]){
-      _arr = state.observableList
-    }
-
-    //Входящие
-    if(state.filterInOutSelected === state.filterInOutList[1]){
-      _arr = state.observableList.filter(call => call.in_out === in_out.incoming)
-    }
-
-    //Исходящие
-    if(state.filterInOutSelected === state.filterInOutList[2]){
-      _arr = state.observableList.filter(call => call.in_out === in_out.outgoing)
-    }
-
-    return _arr;
-
-  },[state.filterInOutSelected, state.observableList]);
-
-  
   const DurationColHeader = () => {
     
     return(
@@ -452,12 +490,12 @@ const MainPage: React.FunctionComponent<Props> = () => {
           <MusicPlayer track={state.track}/> */}
           <div className='call_list__toolbar__dropdown_container'>
             <Dropdown
-              options={state.filterInOutList}
+              options={filterInOutList}
               selected={state.filterInOutSelected}
               setSelected={changeFilterInOutSelected}
             />
 
-            {state.filterInOutSelected !== state.filterInOutList[0] &&
+            {state.filterInOutSelected !== filterInOutList[0] &&
 
               <div className='call_list__reset_filters_option'>
               <p>
@@ -497,7 +535,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
         
         <section>
           <CallTable 
-            observableList={state.observableList ? getObservableListByFilter : undefined}
+            observableList={state.observableList}
           >
             <td className='call_list__table__col_1'>
               {LocalizedStrings.type}
