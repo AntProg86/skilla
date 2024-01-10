@@ -159,14 +159,34 @@ body {
   //background: burlywood;
 }
 .call_list__table__col_6 {
-  width: 33%;
+  width: 8%;
   //background: brown;
 }
 .call_list__table__col_7 {
-  width: 8%;
-  text-align: right;
-  //background: aqua;
+  //width: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
 }
+
+.call_list__table__col_7 .dropdow {
+  width: fit-content;
+}
+
+.reset_duration_date_filter{
+  display: flex;
+  flex-direction: row;
+}
+.reset_duration_date_filter p {
+  margin-right: 5px;
+}
+
+.reset_duration_date_filter div:hover path {
+  fill: #002CFB;
+  cursor: pointer;
+}
+
+
 /*#endregion */
 
 /*Стили для элементов колонки «Оценка»*/

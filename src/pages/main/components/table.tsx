@@ -5,10 +5,11 @@ import LocalizedStrings from '#src/app/localization';
 import { ICall } from '../types';
 
 type Props = {
+  children: any;
   observableList?:()=>Array<ICall>;
 }
 
-const CallTable: React.FunctionComponent<Props> = ({observableList}) => {
+const CallTable: React.FunctionComponent<Props> = ({observableList, children}) => {
   //console.log('*-*--*render Table');
   
   return(
@@ -16,27 +17,7 @@ const CallTable: React.FunctionComponent<Props> = ({observableList}) => {
       <table className='call_list__table'>
         <thead>
           <tr>
-            <td className='call_list__table__col_1'>
-              {LocalizedStrings.type}
-            </td>
-            <td className='call_list__table__col_2'>
-              {LocalizedStrings.time}
-            </td>
-            <td className='call_list__table__col_3'>
-              {LocalizedStrings.person}
-            </td>
-            <td className='call_list__table__col_4'>
-              {LocalizedStrings.call}
-            </td>
-            <td className='call_list__table__col_5'>
-              {LocalizedStrings.source}
-            </td>
-            <td className='call_list__table__col_6'>
-              {LocalizedStrings.assessment}
-            </td>
-            <td className='call_list__table__col_7'>
-              {LocalizedStrings.duration}
-            </td>
+            {children}
           </tr>
         </thead>
 

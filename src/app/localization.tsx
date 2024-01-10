@@ -27,6 +27,8 @@ export interface IStrings extends LocalizedStringsMethods{
   incoming: string;
   outgoing: string;
   reset_filters: string;
+  sort_by_date: string;
+  sort_by_duration: string;
 }
 
 // Таблица перевода
@@ -59,6 +61,8 @@ let strings: IStrings;
       incoming: 'Входящие',
       outgoing: 'Исходящие',
       reset_filters: 'Сбросить фильтры',
+      sort_by_date: 'по дате',
+      sort_by_duration: 'по продол-сти',
     },
     // en: {
     //   _home: "Home",

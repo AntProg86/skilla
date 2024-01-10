@@ -35,8 +35,12 @@ type State = {
 
   //Фильтр по входящим и исходящим звонкам
   filterInOutList: string[],
+  
   //Текущие значение фильтра
   filterInOutSelected: string;
+
+  //Сортировка по продолжительности или дате звонка
+  filterDurationSelected?: string;
 
   track?: any;
 };
@@ -52,7 +56,7 @@ const initState = {
 
 type Props = {
 
-}
+};
 
 //#region func
 //Получить иконку для столбца «Тип» (Вызов)
@@ -155,6 +159,12 @@ const getObservableList = (arr:any[]):ICall[] => {
   
   return _list;
 };
+
+//Значения для сортировки под или продолжительности
+const durationFilterList = [
+  LocalizedStrings.sort_by_date,
+  LocalizedStrings.sort_by_duration
+];
 //#endregion
 
 const track_1 = require("./components/music-player/04. Раб страха.mp3");
@@ -258,10 +268,26 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }));
   };
 
+  //Пользователь выбрал сортировку по дате или продолжительности
+  const changeFilterDurationDate = (value:string) => {
+    changeState((state) => ({ 
+    ...state, 
+     filterDurationSelected:value 
+    }));
+  };
+
   const resetFilter = () => {
     changeState((state) => ({ 
       ...state, 
       filterInOutSelected: state.filterInOutList[0] 
+    }));
+  };
+
+  //Сбросить сортировку по дате или продолжительности
+  const resetDurationDateFilter = () => {
+    changeState((state) => ({ 
+    ...state, 
+      filterDurationSelected:undefined 
     }));
   };
 
@@ -289,6 +315,33 @@ const MainPage: React.FunctionComponent<Props> = () => {
 
   },[state.filterInOutSelected, state.observableList]);
 
+  
+  const DurationColHeader = () => {
+    
+    return(
+      <>
+        {state.filterDurationSelected !== undefined &&
+          <div className='reset_duration_date_filter'>
+            <p>
+              {LocalizedStrings.reset_filters}
+            </p>
+            <div onClick={resetDurationDateFilter}>
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.75 0.88125L7.86875 0L4.375 3.49375L0.88125 0L0 0.88125L3.49375 4.375L0 7.86875L0.88125 8.75L4.375 5.25625L7.86875 8.75L8.75 7.86875L5.25625 4.375L8.75 0.88125Z" fill="#ADBFDF"/>
+              </svg>
+            </div>
+          </div>
+        }
+
+        <Dropdown
+          options={durationFilterList}
+          selected={LocalizedStrings.duration}
+          setSelected={changeFilterDurationDate}
+        />
+      </>
+    )
+  }
+  
   const test = () => {
     console.log('-*-*-*-test');
     //console.log(getDate(state.startDate));
@@ -445,7 +498,29 @@ const MainPage: React.FunctionComponent<Props> = () => {
         <section>
           <CallTable 
             observableList={state.observableList ? getObservableListByFilter : undefined}
-          />
+          >
+            <td className='call_list__table__col_1'>
+              {LocalizedStrings.type}
+            </td>
+            <td className='call_list__table__col_2'>
+              {LocalizedStrings.time}
+            </td>
+            <td className='call_list__table__col_3'>
+              {LocalizedStrings.person}
+            </td>
+            <td className='call_list__table__col_4'>
+              {LocalizedStrings.call}
+            </td>
+            <td className='call_list__table__col_5'>
+              {LocalizedStrings.source}
+            </td>
+            <td className='call_list__table__col_6'>
+              {LocalizedStrings.assessment}
+            </td>
+            <td className='call_list__table__col_7'>
+                <DurationColHeader/>
+            </td>
+          </CallTable>
         </section>
       </div>
     </main>

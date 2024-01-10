@@ -35,7 +35,6 @@ const Dropdown: React.FunctionComponent<Props> = ({
             <>{defaultValue}</>
           ) : (
             <>{selected}</>
-            
           )}
         </div>
         {isActive === false ? (
