@@ -26,6 +26,7 @@ export interface IStrings extends LocalizedStringsMethods{
   all_type: string;
   incoming: string;
   outgoing: string;
+  reset_filters: string;
 }
 
 // Таблица перевода
@@ -57,6 +58,7 @@ let strings: IStrings;
       all_type: 'Все типы',
       incoming: 'Входящие',
       outgoing: 'Исходящие',
+      reset_filters: 'Сбросить фильтры',
     },
     // en: {
     //   _home: "Home",

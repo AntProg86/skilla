@@ -154,11 +154,12 @@ const getObservableList = (arr:any[]):ICall[] => {
   console.log(_list);
   
   return _list;
-}
+};
 //#endregion
 
 const track_1 = require("./components/music-player/04. Раб страха.mp3");
 const track_2 = require("./components/music-player/07. Бой продолжается.mp3");
+
 const MainPage: React.FunctionComponent<Props> = () => {
 
   const _appContext = useContext(AppContext);
@@ -168,14 +169,11 @@ const MainPage: React.FunctionComponent<Props> = () => {
   useEffect(()=>{
     // console.log('*-*-*-*-*useEffect');
     // console.log(data);
-    //test
-    //more test
-    //test 1
     
     changeState((state) => ({ 
     ...state, 
-    startDate: new Date(),
-    endDate: new Date()
+      startDate: new Date(),
+      endDate: new Date()
      //observableList: getObservableList(data.results)
     }))
     
@@ -257,6 +255,13 @@ const MainPage: React.FunctionComponent<Props> = () => {
     changeState((state) => ({ 
     ...state, 
      filterInOutSelected:value 
+    }));
+  };
+
+  const resetFilter = () => {
+    changeState((state) => ({ 
+      ...state, 
+      filterInOutSelected: state.filterInOutList[0] 
     }));
   };
 
@@ -392,14 +397,28 @@ const MainPage: React.FunctionComponent<Props> = () => {
         <section className='call_list__toolbar'>
           {/* <div onClick={test}>test</div>
           <MusicPlayer track={state.track}/> */}
-          <div className='dropdown_container'>
+          <div className='call_list__toolbar__dropdown_container'>
             <Dropdown
               options={state.filterInOutList}
               selected={state.filterInOutSelected}
               setSelected={changeFilterInOutSelected}
             />
+
+            {state.filterInOutSelected !== state.filterInOutList[0] &&
+
+              <div className='call_list__reset_filters_option'>
+              <p>
+                {LocalizedStrings.reset_filters}
+              </p>
+              <div onClick={resetFilter}>
+                <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.75 0.88125L7.86875 0L4.375 3.49375L0.88125 0L0 0.88125L3.49375 4.375L0 7.86875L0.88125 8.75L4.375 5.25625L7.86875 8.75L8.75 7.86875L5.25625 4.375L8.75 0.88125Z" fill="#ADBFDF"/>
+                </svg>
+              </div>
+              </div>
+            }
           </div>
-          <div className='date_picker_container'>
+          <div className='call_list__toolbar__date_picker_container'>
             <p>{LocalizedStrings.date_from}</p>
             <DatePicker
               selected={state.startDate}
