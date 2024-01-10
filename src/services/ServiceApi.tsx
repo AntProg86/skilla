@@ -22,7 +22,7 @@ class serviceApi {
     })
   };
 
-  getResourceArrayBuffer = async (url:string, requestOptions:object, progressBarShow:boolean = true) => {
+  getResourceBlobBuffer = async (url:string, requestOptions:object, progressBarShow:boolean = true) => {
 
     return await fetch(`${url}`, requestOptions).then(result => {
       console.log('-*-*--*--result');
@@ -55,7 +55,7 @@ class serviceApi {
   }
   
   // Проверка на наличие ошибок
-  isError = async (res:any, request = '', res_resource?:any) => {
+    isError = async (res:any, request = '', res_resource?:any) => {
 
     let resBadRequest:any | string = '';
     let errorMessage = '';
@@ -196,7 +196,9 @@ class serviceApi {
     }
     
     const queryString = queries.join('&');
-    const res_resource = await this.getResourceArrayBuffer(`${address+'?'}${queryString}`, requestOptions);
+    console.log(`${address+'?'}${queryString}`);
+    
+    const res_resource = await this.getResourceBlobBuffer(`${address+'?'}${queryString}`, requestOptions);
     //const res_resource = await this.getResource(`${address}`, requestOptions);
     const res = await res_resource.res_body;
             

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState} from 'react';
+import React, { useEffect, useContext, useState, useCallback} from 'react';
 import useSound from "use-sound"; //для работы со звуком
 import { useDispatch, useSelector } from 'react-redux';
 import LocalizedStrings from '#src/app/localization';
@@ -32,22 +32,48 @@ const IconClose = () => {
 }
 
 type Props = {
-  track:any;
+  track?:any;
 }
 
 const track_1 = require("./04. Раб страха.mp3");
 
 const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
-  console.log('*-*-*-*track_1');
-  console.log(track_1);
-  console.log('*-*-*-*-*track');
-  console.log(track);
+  console.log('*-*-*-**Track Render');
+  
+  // console.log('*-*-*-*track_1');
+  // console.log(track_1);
+  // console.log('*-*-*-*-*track');
+  // console.log(track);
   
   
+  //const [track1?, setTrack] = useState(undefined)
   
+  const getTrack_1 = () => {
+    const track_1 = require("./04. Раб страха.mp3");
+    const track_2 = require("./07. Бой продолжается.mp3");
+    return track_1
+  }
+  
+  const getTrack = useCallback(()=>{
+    console.log('*-*-*-*getTrack');
+    console.log(track);
+
+    const track_1 = require("./04. Раб страха.mp3");
+    const track_2 = require("./07. Бой продолжается.mp3");
+    
+    if(track !== undefined){
+      return track
+      //return track_2
+      
+    }
+    
+    return track_1
+  },[track]);
+
+  const [track1, setTrack] = useState();
   
   const [isPlaying, setIsPlaying] = useState(false);
-  const [play, { pause, duration, sound }] = useSound(track);
+  const [play, { pause, duration, sound }] = useSound(getTrack());
 
   //текущее положение звука в минутах и секундах
   const [currTime, setCurrTime] = useState({
@@ -75,20 +101,20 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
 
   },[sound])
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (sound) {
-        setSeconds(sound.seek([])); // устанавливаем состояние с текущим значением в секундах
-        const min = Math.floor(sound.seek([]) / 60);
-        const sec = Math.floor(sound.seek([]) % 60);
-        setCurrTime({
-          min,
-          sec,
-        });
-      }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [sound]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (sound) {
+  //       setSeconds(sound.seek([])); // устанавливаем состояние с текущим значением в секундах
+  //       const min = Math.floor(sound.seek([]) / 60);
+  //       const sec = Math.floor(sound.seek([]) % 60);
+  //       setCurrTime({
+  //         min,
+  //         sec,
+  //       });
+  //     }
+  //   }, 1000);
+  //   return () => clearInterval(interval);
+  // }, [sound]);
   
   const playingButton = () => {
     //console.log('*-*-*-*-*playingButton');

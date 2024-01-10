@@ -157,6 +157,8 @@ const getObservableList = (arr:any[]):ICall[] => {
 }
 //#endregion
 
+const track_1 = require("./components/music-player/04. Раб страха.mp3");
+const track_2 = require("./components/music-player/07. Бой продолжается.mp3");
 const MainPage: React.FunctionComponent<Props> = () => {
 
   const _appContext = useContext(AppContext);
@@ -289,6 +291,26 @@ const MainPage: React.FunctionComponent<Props> = () => {
     //console.log(getObservableListByFilter());
     //console.log(state.observableList);
     
+    let url = `https://api.skilla.ru/mango/getRecord?record=MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow&partnership_id=578`;
+    let requestOptions = {
+      headers: {
+        'Authorization': 'Bearer testtoken',
+        'Content-type': 'audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3',
+        'Content-Transfer-Encoding': 'binary',
+        'Content-Disposition': 'filename="record.mp3"'
+      },
+    } as any;
+    // Определяем метод запроса
+    requestOptions["method"] = 'POST';
+
+    fetch(url, requestOptions)
+    .then(response => response.blob())
+    .then(blob => {
+      console.log('*-*-*-*blod');
+      console.log(blob);
+    })
+
+    return
     _appContext.doFetch(postRecordFetch,
       {
         record: 'MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow', 
@@ -299,11 +321,21 @@ const MainPage: React.FunctionComponent<Props> = () => {
 
     //  console.log('*-*-*--*-*-*data');
     //  console.log(data);
-    //  const track_1 = require("./components/music-player/04. Раб страха.mp3");
+    
+      
+      // changeState((state) => ({ 
+      // ...state, 
+      //  track: payload 
+      // }))
+    
      if (payload){
       // const ctx = new AudioContext()
       // let audio;
-      // const url = URL.createObjectURL(payload);
+      const url = URL.createObjectURL(payload);
+      changeState((state) => ({ 
+      ...state, 
+       track: url 
+      }))
       //   //new Audio(url).play();
       
       //   console.log(url + '.mp3');
@@ -358,8 +390,8 @@ const MainPage: React.FunctionComponent<Props> = () => {
     <main className='call_list__main'>
       <div className='call_list__container'>
         <section className='call_list__toolbar'>
-          {/* <div onClick={test}>test</div> */}
-          {/* <MusicPlayer track={state.track}/> */}
+          {/* <div onClick={test}>test</div>
+          <MusicPlayer track={state.track}/> */}
           <div className='dropdown_container'>
             <Dropdown
               options={state.filterInOutList}
