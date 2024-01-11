@@ -21,6 +21,7 @@ body {
   max-width: 1440px;
 }
 
+/*#region toolbar*/
 .call_list__toolbar {
   display: flex;
   justify-content: space-between;
@@ -62,10 +63,44 @@ body {
   margin-right: 7px;
 }
 
+.call_list__toolbar__date_picker_container .dropdow-item {
+  display: flex;
+  flex-direction: row;
+}
+
+.call_list__toolbar__date_picker_container .dropdow .dropdow-content {
+  //width: 210px;
+  //left: -80%;
+  display: flex;
+  flex-direction: column;
+}
+.call_list__toolbar__date_picker_container .dropdow {
+  //width: 210px;
+  z-index: 1;
+}
+
+.call_list__toolbar__date_picker_container .dropdow .dropdow-content svg{
+  visibility: collapse;
+  width: 0px;
+}
+
+.call_list__toolbar__date_picker_container .dropdow .dropdow-btn {
+  justify-content: right;
+  flex-direction: row;
+}
+.call_list__toolbar__date_picker_container .dropdow .dropdow-btn > div{
+  //justify-content: right;
+  display: flex;
+  flex-direction: row;
+}
+.call_list__toolbar__date_picker_container .dropdow .dropdow-btn > div > p{
+  color: #002CFB;
+}
+
 .call_list__toolbar__date_picker_container p{
   margin-left: 5px;
   margin-right: 5px;
-  color: $text-color-1;
+  //color: #002CFB;
 }
 
 .call_list__toolbar__date_picker_container svg{
@@ -75,14 +110,40 @@ body {
 }
 
 .call_list__toolbar__date_picker_container input {
-  width: 80px;
+  width: 70px;
   border-radius: 5px;
   border-color: #ADBFDF;
+}
+
+.dropdow .dropdow-content .indicate_dates{
+  flex-direction: column;
+}
+.dropdow .dropdow-content .indicate_dates > p{
+  margin-bottom: 5px;
+}
+.dropdow .dropdow-content .indicate_dates > div{
+  flex-wrap: wrap;
+}
+
+.indicate_dates {
+  display: flex;
+  flex-direction: row;
+}
+.indicate_dates > div {
+  display: flex;
+  flex-direction: row;
+}
+.indicate_dates p {
+  text-wrap: nowrap;
+}
+.indicate_dates .react-datepicker-wrapper {
+  margin-left: 5px;
 }
 
 .react-datepicker-wrapper:hover path{
   fill: #002CFB;
 }
+/*#endregion toolbar*/
 
 /*#region Таблица*/
 .text-color-1 {

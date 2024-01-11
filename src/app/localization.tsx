@@ -29,6 +29,11 @@ export interface IStrings extends LocalizedStringsMethods{
   reset_filters: string;
   sort_by_date: string;
   sort_by_duration: string;
+  three_days: string;
+  indicate_dates: string;
+  year: string;
+  month: string;
+  week: string;
 }
 
 // Таблица перевода
@@ -63,6 +68,12 @@ let strings: IStrings;
       reset_filters: 'Сбросить фильтры',
       sort_by_date: 'по дате',
       sort_by_duration: 'по продол-сти',
+      three_days: '3 дня',
+      week: 'неделя',
+      month: 'месяц',
+      year: 'год',
+      indicate_dates: 'указать даты',
+
     },
     // en: {
     //   _home: "Home",

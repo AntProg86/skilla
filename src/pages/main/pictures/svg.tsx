@@ -27,6 +27,8 @@ export const ArrowUP = () => {
     </>
   )
 }
+
+
 export const ArrowDown = () => {
   return(
     <>
@@ -37,6 +39,39 @@ export const ArrowDown = () => {
         <defs>
         <clipPath id="clip0_60_3465">
         <rect width="24" height="24" fill="white"/>
+        </clipPath>
+        </defs>
+      </svg>
+    </>
+  )
+}
+
+export const ArrowLeft = () => {
+  return(
+    <>
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clipPath="url(#clip0_60_3453)">
+        <path d="M6.175 15.825L2.35833 12L6.175 8.175L5 7L0 12L5 17L6.175 15.825Z" fill="#ADBFDF"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_60_3453">
+        <rect width="16" height="24" fill="white"/>
+        </clipPath>
+        </defs>
+      </svg>
+    </>
+  )
+}
+export const ArrowRight = () => {
+  return(
+    <>
+      <svg width="17" height="24" viewBox="0 0 17 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clipPath="url(#clip0_60_3459)">
+        <path d="M9.58997 15.825L13.4066 12L9.58997 8.175L10.765 7L15.765 12L10.765 17L9.58997 15.825Z" fill="#ADBFDF"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_60_3459">
+        <rect width="17" height="24" fill="white"/>
         </clipPath>
         </defs>
       </svg>

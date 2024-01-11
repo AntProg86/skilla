@@ -21,7 +21,7 @@ import {
   assessment,
   filterInOut,
  } from './types';
-import { IconCalendar } from './pictures/svg';
+import { IconCalendar, ArrowLeft, ArrowRight } from './pictures/svg';
 import Dropdown from './components/dropdown';
 import { getDate, getTimeFromSeconds } from '#src/functions/date';
 import MusicPlayer from './components/music-player';
@@ -32,9 +32,6 @@ type State = {
 
   //Список звонков на экране
   observableList?: Array<ICall>;
-
-  //Фильтр по входящим и исходящим звонкам
-  //filterInOutList: string[],
   
   //Текущие значение фильтра
   filterInOutSelected: string;
@@ -42,6 +39,9 @@ type State = {
   //Сортировка по продолжительности или дате звонка
   filterDurationSelected?: string;
 
+  //Выбранный пользователем период дат
+  dateOptionSelected?: React.ReactNode;
+  
   track?: any;
 
   //Признак входящего или исходящего звонка
@@ -55,11 +55,6 @@ type State = {
 };
 
 const initState = {
-  // filterInOutList: [
-  //   LocalizedStrings.all_type,
-  //   LocalizedStrings.incoming,
-  //   LocalizedStrings.outgoing,
-  // ],
   filterInOutSelected: LocalizedStrings.all_type,
 };
 
@@ -181,6 +176,7 @@ const filterInOutList = [
   LocalizedStrings.incoming,
   LocalizedStrings.outgoing,
 ];
+
 //#endregion
 
 const track_1 = require("./components/music-player/04. Раб страха.mp3");
@@ -192,6 +188,51 @@ const MainPage: React.FunctionComponent<Props> = () => {
   const dispatch = useDispatch();
   const [state, changeState] = useState<State>(initState);
 
+  //Значения для выборки по датам
+const dateSelectorList:React.ReactNode[] = [
+  <>
+    <IconCalendar/>
+    <p>{LocalizedStrings.three_days}</p>
+  </>,
+  <>
+    <IconCalendar/>
+    <p>{LocalizedStrings.week}</p>
+  </>,
+  <>
+    <IconCalendar/>
+    <p>{LocalizedStrings.month}</p>
+  </>,
+  <>
+    <IconCalendar/>
+    <p>{LocalizedStrings.year}</p>
+  </>,
+  <div className='indicate_dates'>
+    <p>{LocalizedStrings.indicate_dates}</p>
+    {/* <p>{LocalizedStrings.date_from}</p> */}
+    <div>
+      <DatePicker
+        selected={state.startDate}
+        onChange={(date)=>changeStartDate(date)}
+        dateFormat='dd.MM.yyyy'
+        //placeholderText='Start Date'
+        // showIcon
+        // icon={<IconCalendar/>}
+        locale={ru}
+      />
+      {/* <p>{LocalizedStrings.date_to}</p> */}
+      <DatePicker
+        selected={state.endDate}
+        onChange={(date)=>changeEndDate(date)}
+        dateFormat='dd.MM.yyyy'
+        //placeholderText='Start Date'
+        // showIcon
+        // icon={<IconCalendar/>}
+        locale={ru}
+      />
+    </div>
+  </div>
+];
+  
   useEffect(()=>{
     // console.log('*-*-*-*-*useEffect');
     // console.log(data);
@@ -199,7 +240,8 @@ const MainPage: React.FunctionComponent<Props> = () => {
     changeState((state) => ({ 
     ...state, 
       startDate: new Date(),
-      endDate: new Date()
+      endDate: new Date(),
+      dateOptionSelected: dateSelectorList[0],
      //observableList: getObservableList(data.results)
     }))
     
@@ -316,7 +358,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }
     
     return undefined;
-  }
+  };
 
   //Пользователь изменил фильтр: Все / Входящие / Исходящие
   const changeFilterInOutSelected = (value:string) => {
@@ -354,6 +396,15 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }));
   };
 
+  //Изменить период дат
+  const changeDateOptionSelected = (value:React.ReactNode) => {
+    changeState((state) => ({ 
+    ...state, 
+      dateOptionSelected: value
+    }));
+  };
+
+  //Заголовок колонки «Длительность»
   const DurationColHeader = () => {
     
     return(
@@ -378,6 +429,22 @@ const MainPage: React.FunctionComponent<Props> = () => {
         />
       </>
     )
+  };
+  
+  const previousDateOptionSelected = () => {
+    console.log('*-*-*-*-*previousDateOptionSelected');
+    
+    console.log(dateSelectorList.indexOf(state.dateOptionSelected));
+    console.log(state.dateOptionSelected);
+    
+    if(dateSelectorList[1].toString() == state.dateOptionSelected.toString()){
+      console.log('*-*-*-*!!!!!!!!!!!!!!');
+      
+    }
+  };
+
+  const nextDateOptionSelected = () => {
+
   }
   
   const test = () => {
@@ -510,26 +577,20 @@ const MainPage: React.FunctionComponent<Props> = () => {
             }
           </div>
           <div className='call_list__toolbar__date_picker_container'>
-            <p>{LocalizedStrings.date_from}</p>
-            <DatePicker
-              selected={state.startDate}
-              onChange={(date)=>changeStartDate(date)}
-              dateFormat='dd.MM.yyyy'
-              //placeholderText='Start Date'
-              showIcon
-              icon={<IconCalendar/>}
-              locale={ru}
+            
+            <div onClick={previousDateOptionSelected}>
+              <ArrowLeft/>
+            </div>
+            <Dropdown
+              options={dateSelectorList}
+              selected={state.dateOptionSelected}
+              setSelected={changeDateOptionSelected}
             />
-            <p>{LocalizedStrings.date_to}</p>
-            <DatePicker
-              selected={state.endDate}
-              onChange={(date)=>changeEndDate(date)}
-              dateFormat='dd.MM.yyyy'
-              //placeholderText='Start Date'
-              showIcon
-              icon={<IconCalendar/>}
-              locale={ru}
-            />
+            <div onClick={nextDateOptionSelected}>
+              <ArrowRight/>
+            </div>
+            
+            
           </div>
         </section>
         

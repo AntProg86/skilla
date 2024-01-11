@@ -8,7 +8,7 @@ import { ArrowDown, ArrowUP } from '../../pictures/svg';
 type Props = {
   selected:any;
   setSelected:any;
-  options: string[],
+  options: React.ReactNode[],
   defaultValue?: string,
 }
 
@@ -29,31 +29,32 @@ const Dropdown: React.FunctionComponent<Props> = ({
 
   return(
     <div className="dropdow" ref={refDropdow}>
-      <div className="dropdow-btn" onClick={(e)=>setIsActive(!isActive)}>
-        <div>
+      <div className="dropdow-btn" >
+        <div onClick={(e)=>setIsActive(!isActive)}>
           {defaultValue !== undefined ? (
             <>{defaultValue}</>
           ) : (
             <>{selected}</>
           )}
-        </div>
+        
         {isActive === false ? (
           <ArrowDown/>
         ) : (
           <ArrowUP/>
         )}
+        </div>
       </div>
       {isActive &&
         <div className="dropdow-content">
-          {options.map(option => (
-            <div key={option} 
+          {options.map((option, index) => (
+            <div key={index} 
                  className={option === selected ? 'dropdow-item current-option-color' : 'dropdow-item'}
                  onClick={
                   (e)=>{
                     setSelected(option)
                     setIsActive(false)
                   }}>
-              {option}
+              <>{option}</>
             </div>
           ))}
         </div>

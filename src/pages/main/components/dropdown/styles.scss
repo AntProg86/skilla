@@ -5,25 +5,35 @@
   user-select: none;
 }
 
-.dropdow .dropdow-btn {
+.dropdow .dropdow-btn  {
   padding: 5px 7px;
   background: inherit;
   color: #5E7793;
   display: flex;
   align-items: center;
   justify-content: center;
+  //cursor: pointer;
+  width: auto;
+}
+.dropdow .dropdow-btn > div {
+  display: flex;
+  align-items: center;
+  //justify-content: center;
   cursor: pointer;
+  
 }
 
 .dropdow .dropdow-content {
   position: absolute;
   top: 110%;
   left: 0;
+  //right: 110%;
   padding: 4px, 0px, 4px, 0px;
   background: #fff;
   font-weight: 500;
   //color: #ffffff;
   width: 100%;
+  //width: 210px;
   box-shadow: 0px 4px 20px 0px #00000014;
   border-radius: 8px;
 
