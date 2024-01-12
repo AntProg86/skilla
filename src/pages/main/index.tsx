@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import LocalizedStrings from '#src/app/localization';
 import './styles.scss';
 import { AppContext } from '#src/app/context';
-import { getCurrencyRateFetch, getPlanetFetch } from '#src/app/actions';
 import { ActionSetErrorMessageAbsolute } from '#src/components/errorAbsolute/reducer';
 import { postCallListFetch, postRecordFetch } from '#api/actions';
 import DatePicker from "react-datepicker";
@@ -22,7 +21,7 @@ import {
   filterInOut,
  } from './types';
 import { IconCalendar, ArrowLeft, ArrowRight } from './pictures/svg';
-import Dropdown from './components/dropdown';
+import Dropdown, {DropdownOption} from './components/dropdown';
 import { getDate, getTimeFromSeconds } from '#src/functions/date';
 import MusicPlayer from './components/music-player';
 
@@ -166,15 +165,30 @@ const getObservableList = (arr:any[]):ICall[] => {
 
 //Значения для сортировки по дате или продолжительности
 const durationFilterList = [
-  LocalizedStrings.sort_by_date,
-  LocalizedStrings.sort_by_duration
+  {
+    id: 1,
+    value: LocalizedStrings.sort_by_date
+  },
+  {
+    id: 2,
+    value: LocalizedStrings.sort_by_duration
+  }
 ];
 
 //Значения для сортировки входящие/исходящие
 const filterInOutList = [
-  LocalizedStrings.all_type,
-  LocalizedStrings.incoming,
-  LocalizedStrings.outgoing,
+  {
+    id: 1,
+    value: LocalizedStrings.all_type,
+  },
+  {
+    id: 2,
+    value: LocalizedStrings.incoming,
+  },
+  {
+    id: 3,
+    value:  LocalizedStrings.outgoing,
+  }
 ];
 
 //#endregion
@@ -188,49 +202,72 @@ const MainPage: React.FunctionComponent<Props> = () => {
   const dispatch = useDispatch();
   const [state, changeState] = useState<State>(initState);
 
+
   //Значения для выборки по датам
-const dateSelectorList:React.ReactNode[] = [
-  <>
-    <IconCalendar/>
-    <p>{LocalizedStrings.three_days}</p>
-  </>,
-  <>
-    <IconCalendar/>
-    <p>{LocalizedStrings.week}</p>
-  </>,
-  <>
-    <IconCalendar/>
-    <p>{LocalizedStrings.month}</p>
-  </>,
-  <>
-    <IconCalendar/>
-    <p>{LocalizedStrings.year}</p>
-  </>,
-  <div className='indicate_dates'>
-    <p>{LocalizedStrings.indicate_dates}</p>
-    {/* <p>{LocalizedStrings.date_from}</p> */}
-    <div>
-      <DatePicker
-        selected={state.startDate}
-        onChange={(date)=>changeStartDate(date)}
-        dateFormat='dd.MM.yyyy'
-        //placeholderText='Start Date'
-        // showIcon
-        // icon={<IconCalendar/>}
-        locale={ru}
-      />
-      {/* <p>{LocalizedStrings.date_to}</p> */}
-      <DatePicker
-        selected={state.endDate}
-        onChange={(date)=>changeEndDate(date)}
-        dateFormat='dd.MM.yyyy'
-        //placeholderText='Start Date'
-        // showIcon
-        // icon={<IconCalendar/>}
-        locale={ru}
-      />
-    </div>
-  </div>
+const dateSelectorList:DropdownOption[] = [
+  {
+    id : 1,
+    value :  
+    <>
+      <IconCalendar/>
+      <p>{LocalizedStrings.three_days}</p>
+    </>,
+  },
+  {
+    id : 2,
+    value :  
+    <>
+      <IconCalendar/>
+      <p>{LocalizedStrings.week}</p>
+    </>,
+  },
+  {
+    id: 3,
+    value: 
+    <>
+      <IconCalendar/>
+      <p>{LocalizedStrings.month}</p>
+    </>,
+  },
+  {
+    id: 4,
+    value:
+    <>
+      <IconCalendar/>
+      <p>{LocalizedStrings.year}</p>
+    </>
+  },
+  {
+    id: 5,
+    value: 
+    <>
+      <div className='indicate_dates'>
+        <p>{LocalizedStrings.indicate_dates}</p>
+        {/* <p>{LocalizedStrings.date_from}</p> */}
+        <div>
+          <DatePicker
+            selected={state.startDate}
+            onChange={(date)=>changeStartDate(date)}
+            dateFormat='dd.MM.yyyy'
+            //placeholderText='Start Date'
+            // showIcon
+            // icon={<IconCalendar/>}
+            locale={ru}
+          />
+          {/* <p>{LocalizedStrings.date_to}</p> */}
+          <DatePicker
+            selected={state.endDate}
+            onChange={(date)=>changeEndDate(date)}
+            dateFormat='dd.MM.yyyy'
+            //placeholderText='Start Date'
+            // showIcon
+            // icon={<IconCalendar/>}
+            locale={ru}
+          />
+        </div>
+      </div>
+    </>
+  }
 ];
   
   useEffect(()=>{
@@ -241,7 +278,7 @@ const dateSelectorList:React.ReactNode[] = [
     ...state, 
       startDate: new Date(),
       endDate: new Date(),
-      dateOptionSelected: dateSelectorList[0],
+      dateOptionSelected: dateSelectorList[0].value,
      //observableList: getObservableList(data.results)
     }))
     
@@ -329,17 +366,17 @@ const dateSelectorList:React.ReactNode[] = [
   const getInOutValue = (filterInOutSelected: string ) => {
 
     //Показать все
-    if(filterInOutSelected === filterInOutList[0]){
+    if(filterInOutSelected === filterInOutList[0].value){
       return undefined;
     }
 
     //Входящие
-    if(filterInOutSelected === filterInOutList[1]){
+    if(filterInOutSelected === filterInOutList[1].value){
       return 1;
     }
 
     //Исходящие
-    if(filterInOutSelected === filterInOutList[2]){
+    if(filterInOutSelected === filterInOutList[2].value){
       return 0;
     }
   };
@@ -348,12 +385,12 @@ const dateSelectorList:React.ReactNode[] = [
   const getFilterDurationValue = (filterDurationSelected: string): undefined | 'duration' | 'date' => {
 
     //продолжительность
-    if(filterDurationSelected === durationFilterList[0]){
+    if(filterDurationSelected === durationFilterList[0].value){
       return 'date';
     }
 
     //дата
-    if(filterDurationSelected === durationFilterList[1]){
+    if(filterDurationSelected === durationFilterList[1].value){
       return 'duration';
     }
     
@@ -361,20 +398,20 @@ const dateSelectorList:React.ReactNode[] = [
   };
 
   //Пользователь изменил фильтр: Все / Входящие / Исходящие
-  const changeFilterInOutSelected = (value:string) => {
+  const changeFilterInOutSelected = (value:DropdownOption) => {
     changeState((state) => ({ 
     ...state, 
-     filterInOutSelected:value,
-     in_out: getInOutValue(value)
+     filterInOutSelected:value.value.toString(),
+     in_out: getInOutValue(value.value.toString())
     }));
   };
 
   //Пользователь выбрал сортировку по дате или продолжительности
-  const changeFilterDurationDate = (value:string) => {
+  const changeFilterDurationDate = (value:DropdownOption) => {
     changeState((state) => ({ 
     ...state, 
-     filterDurationSelected:value,
-     sort_by: getFilterDurationValue(value)
+     filterDurationSelected:value.value.toString(),
+     sort_by: getFilterDurationValue(value.value.toString())
     }));
   };
 
@@ -382,7 +419,7 @@ const dateSelectorList:React.ReactNode[] = [
   const resetFilter = () => {
     changeState((state) => ({ 
       ...state, 
-      filterInOutSelected: filterInOutList[0],
+      filterInOutSelected: filterInOutList[0].value,
       in_out: undefined
     }));
   };
@@ -397,10 +434,10 @@ const dateSelectorList:React.ReactNode[] = [
   };
 
   //Изменить период дат
-  const changeDateOptionSelected = (value:React.ReactNode) => {
+  const changeDateOptionSelected = (value:DropdownOption) => {
     changeState((state) => ({ 
     ...state, 
-      dateOptionSelected: value
+      dateOptionSelected: value.value
     }));
   };
 
@@ -434,7 +471,7 @@ const dateSelectorList:React.ReactNode[] = [
   const previousDateOptionSelected = () => {
     console.log('*-*-*-*-*previousDateOptionSelected');
     
-    console.log(dateSelectorList.indexOf(state.dateOptionSelected));
+    // console.log(dateSelectorList.indexOf(state.dateOptionSelected));
     console.log(state.dateOptionSelected);
     
     if(dateSelectorList[1].toString() == state.dateOptionSelected.toString()){
@@ -562,7 +599,7 @@ const dateSelectorList:React.ReactNode[] = [
               setSelected={changeFilterInOutSelected}
             />
 
-            {state.filterInOutSelected !== filterInOutList[0] &&
+            {state.filterInOutSelected !== filterInOutList[0].value &&
 
               <div className='call_list__reset_filters_option'>
               <p>
@@ -577,7 +614,6 @@ const dateSelectorList:React.ReactNode[] = [
             }
           </div>
           <div className='call_list__toolbar__date_picker_container'>
-            
             <div onClick={previousDateOptionSelected}>
               <ArrowLeft/>
             </div>
@@ -589,8 +625,6 @@ const dateSelectorList:React.ReactNode[] = [
             <div onClick={nextDateOptionSelected}>
               <ArrowRight/>
             </div>
-            
-            
           </div>
         </section>
         

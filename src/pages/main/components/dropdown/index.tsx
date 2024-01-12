@@ -5,11 +5,16 @@ import './styles.scss';
 import { useClickOutside } from '../../../../functions/hooks';
 import { ArrowDown, ArrowUP } from '../../pictures/svg';
 
+export type DropdownOption = {
+  id: number;
+  value: React.ReactNode | string;
+}
+
 type Props = {
   selected:any;
   setSelected:any;
-  options: React.ReactNode[],
-  defaultValue?: string,
+  options: DropdownOption[],
+  defaultValue?: DropdownOption,
 }
 
 const Dropdown: React.FunctionComponent<Props> = ({
@@ -32,7 +37,7 @@ const Dropdown: React.FunctionComponent<Props> = ({
       <div className="dropdow-btn" >
         <div onClick={(e)=>setIsActive(!isActive)}>
           {defaultValue !== undefined ? (
-            <>{defaultValue}</>
+            <>{defaultValue.value}</>
           ) : (
             <>{selected}</>
           )}
@@ -47,14 +52,14 @@ const Dropdown: React.FunctionComponent<Props> = ({
       {isActive &&
         <div className="dropdow-content">
           {options.map((option, index) => (
-            <div key={index} 
+            <div key={option.id} 
                  className={option === selected ? 'dropdow-item current-option-color' : 'dropdow-item'}
                  onClick={
                   (e)=>{
                     setSelected(option)
                     setIsActive(false)
                   }}>
-              <>{option}</>
+              <>{option.value}</>
             </div>
           ))}
         </div>
