@@ -11,8 +11,8 @@ export type DropdownOption = {
 }
 
 type Props = {
-  selected:any;
-  setSelected:any;
+  selected:DropdownOption;
+  setSelected:(option:DropdownOption)=>void;
   options: DropdownOption[],
   defaultValue?: DropdownOption,
 }
@@ -24,6 +24,8 @@ const Dropdown: React.FunctionComponent<Props> = ({
   defaultValue
 
 }) => {
+  console.log('*-*-*-*Dropdown*-*-**Render');
+  
   const [isActive, setIsActive] = useState(false);
   const refDropdow = useRef(null);
 
@@ -39,7 +41,7 @@ const Dropdown: React.FunctionComponent<Props> = ({
           {defaultValue !== undefined ? (
             <>{defaultValue.value}</>
           ) : (
-            <>{selected}</>
+            <>{selected.value}</>
           )}
         
         {isActive === false ? (

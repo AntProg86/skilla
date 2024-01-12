@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback} from 'react';
+import React, { useEffect, useContext, useState, useCallback, useMemo} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LocalizedStrings from '#src/app/localization';
 import './styles.scss';
@@ -22,7 +22,7 @@ import {
  } from './types';
 import { IconCalendar, ArrowLeft, ArrowRight } from './pictures/svg';
 import Dropdown, {DropdownOption} from './components/dropdown';
-import { getDate, getTimeFromSeconds } from '#src/functions/date';
+import { getDate, getMonth, getTimeFromSeconds, getWeek, getYear, takeAwayDays } from '#src/functions/date';
 import MusicPlayer from './components/music-player';
 
 type State = {
@@ -39,7 +39,7 @@ type State = {
   filterDurationSelected?: string;
 
   //Выбранный пользователем период дат
-  dateOptionSelected?: React.ReactNode;
+  dateOptionSelected?: DropdownOption//React.ReactNode;
   
   track?: any;
 
@@ -204,81 +204,155 @@ const MainPage: React.FunctionComponent<Props> = () => {
 
 
   //Значения для выборки по датам
-const dateSelectorList:DropdownOption[] = [
-  {
-    id : 1,
-    value :  
-    <>
-      <IconCalendar/>
-      <p>{LocalizedStrings.three_days}</p>
-    </>,
-  },
-  {
-    id : 2,
-    value :  
-    <>
-      <IconCalendar/>
-      <p>{LocalizedStrings.week}</p>
-    </>,
-  },
-  {
-    id: 3,
-    value: 
-    <>
-      <IconCalendar/>
-      <p>{LocalizedStrings.month}</p>
-    </>,
-  },
-  {
-    id: 4,
-    value:
-    <>
-      <IconCalendar/>
-      <p>{LocalizedStrings.year}</p>
-    </>
-  },
-  {
-    id: 5,
-    value: 
-    <>
-      <div className='indicate_dates'>
-        <p>{LocalizedStrings.indicate_dates}</p>
-        {/* <p>{LocalizedStrings.date_from}</p> */}
-        <div>
-          <DatePicker
-            selected={state.startDate}
-            onChange={(date)=>changeStartDate(date)}
-            dateFormat='dd.MM.yyyy'
-            //placeholderText='Start Date'
-            // showIcon
-            // icon={<IconCalendar/>}
-            locale={ru}
-          />
-          {/* <p>{LocalizedStrings.date_to}</p> */}
-          <DatePicker
-            selected={state.endDate}
-            onChange={(date)=>changeEndDate(date)}
-            dateFormat='dd.MM.yyyy'
-            //placeholderText='Start Date'
-            // showIcon
-            // icon={<IconCalendar/>}
-            locale={ru}
-          />
+  const dateSelectorList:DropdownOption[] = [
+    {
+      id : 0,
+      value :  
+      <>
+        <IconCalendar/>
+        <p>{LocalizedStrings.three_days}</p>
+      </>,
+    },
+    {
+      id : 1,
+      value :  
+      <>
+        <IconCalendar/>
+        <p>{LocalizedStrings.week}</p>
+      </>,
+    },
+    {
+      id: 2,
+      value: 
+      <>
+        <IconCalendar/>
+        <p>{LocalizedStrings.month}</p>
+      </>,
+    },
+    {
+      id: 3,
+      value:
+      <>
+        <IconCalendar/>
+        <p>{LocalizedStrings.year}</p>
+      </>
+    },
+    {
+      id: 4,
+      value: 
+      <>
+        <div className='indicate_dates'>
+          <p>{LocalizedStrings.indicate_dates}</p>
+          {/* <p>{LocalizedStrings.date_from}</p> */}
+          <div onClick={(e)=>{e.stopPropagation()}}>
+            <DatePicker
+              selected={state.startDate}
+              onChange={(date)=>changeStartDate(date)}
+              dateFormat='dd.MM.yyyy'
+              //placeholderText='Start Date'
+              // showIcon
+              // icon={<IconCalendar/>}
+              locale={ru}
+            />
+            {/* <p>{LocalizedStrings.date_to}</p> */}
+            <DatePicker
+              selected={state.endDate}
+              onChange={(date)=>changeEndDate(date)}
+              dateFormat='dd.MM.yyyy'
+              //placeholderText='Start Date'
+              // showIcon
+              // icon={<IconCalendar/>}
+              locale={ru}
+            />
+          </div>
         </div>
-      </div>
-    </>
-  }
-];
+      </>
+    }
+  ];
+
+  const dateSelectorList_1:DropdownOption[] = useMemo(()=>{
+    console.log('*-*-*-*useMemo');
+    
+    return [
+      {
+        id : 0,
+        value :  
+        <>
+          <IconCalendar/>
+          <p>{LocalizedStrings.three_days}</p>
+        </>,
+      },
+      {
+        id : 1,
+        value :  
+        <>
+          <IconCalendar/>
+          <p>{LocalizedStrings.week}</p>
+        </>,
+      },
+      {
+        id: 2,
+        value: 
+        <>
+          <IconCalendar/>
+          <p>{LocalizedStrings.month}</p>
+        </>,
+      },
+      {
+        id: 3,
+        value:
+        <>
+          <IconCalendar/>
+          <p>{LocalizedStrings.year}</p>
+        </>
+      },
+      {
+        id: 4,
+        value: 
+        <>
+          <div className='indicate_dates'>
+            <p>{LocalizedStrings.indicate_dates}</p>
+            {/* <p>{LocalizedStrings.date_from}</p> */}
+            <div onClick={(e)=>{e.stopPropagation()}}>
+              <DatePicker
+                selected={state.startDate}
+                onChange={(date)=>changeStartDate(date)}
+                dateFormat='dd.MM.yyyy'
+                //placeholderText='Start Date'
+                // showIcon
+                // icon={<IconCalendar/>}
+                locale={ru}
+              />
+              {/* <p>{LocalizedStrings.date_to}</p> */}
+              <DatePicker
+                selected={state.endDate}
+                onChange={(date)=>changeEndDate(date)}
+                dateFormat='dd.MM.yyyy'
+                //placeholderText='Start Date'
+                // showIcon
+                // icon={<IconCalendar/>}
+                locale={ru}
+              />
+            </div>
+          </div>
+        </>
+      }
+    ]
+  },[state.startDate, state.endDate, state.dateOptionSelected]);
+  
+  useMemo(()=>{
+
+  },[])
   
   useEffect(()=>{
-    // console.log('*-*-*-*-*useEffect');
+    console.log('*-*-*-*-*useEffect');
     // console.log(data);
     
     changeState((state) => ({ 
     ...state, 
       startDate: new Date(),
       endDate: new Date(),
-      dateOptionSelected: dateSelectorList[0].value,
+      dateOptionSelected: dateSelectorList[0],
      //observableList: getObservableList(data.results)
     }))
     
@@ -350,7 +424,7 @@ const dateSelectorList:DropdownOption[] = [
   const changeStartDate = (date:Date) => {
     changeState((state) => ({ 
     ...state, 
-     startDate: date 
+     startDate: date,
     }));
   };
 
@@ -437,9 +511,59 @@ const dateSelectorList:DropdownOption[] = [
   const changeDateOptionSelected = (value:DropdownOption) => {
     changeState((state) => ({ 
     ...state, 
-      dateOptionSelected: value.value
+      dateOptionSelected: value
     }));
   };
+
+  useEffect(()=>{
+    return
+    if(state.dateOptionSelected === undefined) return;
+    
+    //3 дня
+    if(state.dateOptionSelected.id === 0){
+      const _date = takeAwayDays(new Date(), 3);
+      
+      changeState((state) => ({ 
+      ...state, 
+       startDate: new Date(),
+       endDate: _date
+      }));
+    }
+    
+    //Неделя
+    if(state.dateOptionSelected.id === 1){
+      const _dates = getWeek(new Date());
+      
+      changeState((state) => ({ 
+      ...state, 
+       startDate: _dates[0],
+       endDate: _dates[1]
+      }));
+    }
+
+    //Месяц
+    if(state.dateOptionSelected.id === 2){
+      const _dates = getMonth(new Date());
+      
+      changeState((state) => ({ 
+      ...state, 
+       startDate: _dates[0],
+       endDate: _dates[1]
+      }));
+    }
+
+    //Год
+    if(state.dateOptionSelected.id === 3){
+      const _dates = getYear(new Date());
+      
+      changeState((state) => ({ 
+      ...state, 
+       startDate: _dates[0],
+       endDate: _dates[1]
+      }));
+    }
+  },[state.dateOptionSelected])
+  
 
   //Заголовок колонки «Длительность»
   const DurationColHeader = () => {
@@ -461,7 +585,7 @@ const dateSelectorList:DropdownOption[] = [
 
         <Dropdown
           options={durationFilterList}
-          selected={LocalizedStrings.duration}
+          selected={{id: 0, value:LocalizedStrings.duration}}
           setSelected={changeFilterDurationDate}
         />
       </>
@@ -469,23 +593,25 @@ const dateSelectorList:DropdownOption[] = [
   };
   
   const previousDateOptionSelected = () => {
-    console.log('*-*-*-*-*previousDateOptionSelected');
-    
-    // console.log(dateSelectorList.indexOf(state.dateOptionSelected));
-    console.log(state.dateOptionSelected);
-    
-    if(dateSelectorList[1].toString() == state.dateOptionSelected.toString()){
-      console.log('*-*-*-*!!!!!!!!!!!!!!');
-      
-    }
+    let _id = state.dateOptionSelected.id + 1;
+    if(_id > dateSelectorList.length - 1) _id = 0;
+    changeDateOptionSelected(dateSelectorList[_id]);
   };
 
   const nextDateOptionSelected = () => {
-
-  }
+    let _id = state.dateOptionSelected.id - 1;
+    if(_id < 0) _id = dateSelectorList.length - 1;
+    changeDateOptionSelected(dateSelectorList[_id]);
+  };
   
   const test = () => {
     console.log('-*-*-*-test');
+    console.log(state.startDate);
+    console.log(state.endDate);
+    console.log(state.dateOptionSelected);
+    
+    
+    return;
     //console.log(getDate(state.startDate));
     //getCallList()
     //console.log(getObservableListByFilter());
@@ -590,12 +716,22 @@ const dateSelectorList:DropdownOption[] = [
     <main className='call_list__main'>
       <div className='call_list__container'>
         <section className='call_list__toolbar'>
-          {/* <div onClick={test}>test</div>
-          <MusicPlayer track={state.track}/> */}
+          <div onClick={test}>test
+          {/* <DatePicker
+            selected={state.startDate}
+            onChange={(date)=>changeStartDate(date)}
+            dateFormat='dd.MM.yyyy'
+            //placeholderText='Start Date'
+            // showIcon
+            // icon={<IconCalendar/>}
+            locale={ru}
+          /> */}
+          </div>
+          {/* <MusicPlayer track={state.track}/> */}
           <div className='call_list__toolbar__dropdown_container'>
             <Dropdown
               options={filterInOutList}
-              selected={state.filterInOutSelected}
+              selected={{id:0, value:state.filterInOutSelected}}
               setSelected={changeFilterInOutSelected}
             />
 
@@ -614,15 +750,15 @@ const dateSelectorList:DropdownOption[] = [
             }
           </div>
           <div className='call_list__toolbar__date_picker_container'>
-            <div onClick={previousDateOptionSelected}>
+            <div className='arrow_left_right' onClick={previousDateOptionSelected}>
               <ArrowLeft/>
             </div>
             <Dropdown
               options={dateSelectorList}
-              selected={state.dateOptionSelected}
+              selected={state.dateOptionSelected === undefined ? {id:0, value:''} : state.dateOptionSelected}
               setSelected={changeDateOptionSelected}
             />
-            <div onClick={nextDateOptionSelected}>
+            <div className='arrow_left_right' onClick={nextDateOptionSelected}>
               <ArrowRight/>
             </div>
           </div>
