@@ -49,7 +49,7 @@ export const getWeek = (date:Date) => {
 
   // Get the previous Monday
   let monday = new Date(now);
-  monday.setDate(monday.getDate() - monday.getDay() + 2);
+  monday.setDate(monday.getDate() - monday.getDay() + 1);
 
   // Get next Sunday
   let sunday = new Date(now);

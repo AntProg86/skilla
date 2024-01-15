@@ -1,7 +1,9 @@
-import React, { useEffect, useContext, useState, useCallback} from 'react';
+import React, { useEffect, useContext, useState, useCallback, useRef} from 'react';
 import useSound from "use-sound"; //для работы со звуком
 import { useDispatch, useSelector } from 'react-redux';
 import LocalizedStrings from '#src/app/localization';
+import ReactPlayer from 'react-player'
+
 import './styles.scss';
 
 const IconDownload = () => {
@@ -30,6 +32,30 @@ const IconClose = () => {
     </>
   )
 }
+
+type State = {
+  track?:any;
+  start:number,
+  end:number,
+  loadedSeconds:number,
+  playedSeconds:number,
+  currTime: {
+    min: number | string;
+    sec:number | string;
+  }
+};
+
+const initState = {
+  start:0,
+  end:0,
+  loadedSeconds: 1,
+  playedSeconds: 1,
+  currTime: {
+    min: 0,
+    sec: 0
+  }
+};
+
 
 type Props = {
   track?:any;
@@ -70,11 +96,14 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
     return track_1
   },[track]);
 
-  const [track1, setTrack] = useState();
+  //const [track1, setTrack] = useState<any>();
+  const [state, changeState] = useState<State>(initState);
   
   const [isPlaying, setIsPlaying] = useState(false);
-  const [play, { pause, duration, sound }] = useSound(getTrack());
-
+  //const [play, { pause, duration, sound }] = useSound(track1);
+  
+  const refPlayer = useRef()
+  
   //текущее положение звука в минутах и секундах
   const [currTime, setCurrTime] = useState({
     min: 0,
@@ -89,17 +118,43 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
   // текущая позиция звука в секундах
   const [seconds, setSeconds] = useState();
   
-  useEffect(()=> {
-    const sec = duration / 1000;
-    const min = Math.floor(sec / 60);
-    const secRemain = Math.floor(sec % 60);
-    const time = {
-      min: min,
-      sec: secRemain
-    }
-    setTime(time);
+  // useEffect(()=> {
+  //   const sec = duration / 1000;
+  //   const min = Math.floor(sec / 60);
+  //   const secRemain = Math.floor(sec % 60);
+  //   const time = {
+  //     min: min,
+  //     sec: secRemain
+  //   }
+  //   setTime(time);
 
-  },[sound])
+  // },[sound])
+
+  useEffect(()=>{
+    let url = `https://api.skilla.ru/mango/getRecord?record=MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow&partnership_id=578`;
+    let requestOptions = {
+      headers: {
+        'Authorization': 'Bearer testtoken',
+        'Content-type': 'audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3',
+        'Content-Transfer-Encoding': 'binary',
+        'Content-Disposition': 'filename="record.mp3"'
+      },
+    } as any;
+    // Определяем метод запроса
+    requestOptions["method"] = 'POST';
+ 
+    fetch(url, requestOptions)
+    .then(response => response.blob())
+    .then(blob => {
+      console.log('*-*-*-*blod');
+      console.log(blob);
+      //setTrack(URL.createObjectURL(blob))
+      changeState((state) => ({ 
+      ...state, 
+       track: track_1//URL.createObjectURL(blob) 
+      }))
+    })
+  },[])
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -116,17 +171,57 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
   //   return () => clearInterval(interval);
   // }, [sound]);
   
+  const getTime = () => {
+    //state.loadedSeconds - state.playedSeconds
+  }
+  
   const playingButton = () => {
     //console.log('*-*-*-*-*playingButton');
     //console.log(track);
     if (isPlaying) {
-      pause(); // приостанавливаем воспроизведение звука
+      //pause(); // приостанавливаем воспроизведение звука
       setIsPlaying(false);
     } else {
-      play(); // воспроизводим аудиозапись
+      //play(); // воспроизводим аудиозапись
       setIsPlaying(true);
     }
   };
+  
+  //Получает время воспроизведения
+  const handleProgress = (e:any) => {
+
+    //console.log(e);
+    // loaded: 1
+    // loadedSeconds: 32.184 //Общее время
+    // played: 0.010530014914243102
+    // playedSeconds: 0.338898 //Сколько прошло
+
+    // let _time = state.loadedSeconds - state.playedSeconds
+    // const min = Math.floor(sound.seek([]) / 60);
+    // const sec = Math.floor(sound.seek([]) % 60);
+
+    const sec = e.loadedSeconds / 1000;
+    //const min = Math.floor(sec / 60);
+    //const secRemain = Math.floor(sec % 60);
+    console.log((e.loadedSeconds - e.playedSeconds).toFixed(0));
+    //console.log(secRemain);
+    console.log(sec);
+    console.log(e.loadedSeconds.toFixed(0));
+
+    let sec_1 = (e.loadedSeconds - e.playedSeconds).toFixed(0)
+    const min = Math.floor(Number(sec_1) / 60);
+    const secRemain = Math.floor(Number(sec_1) % 60);
+    console.log(secRemain);
+    
+    changeState((state) => ({ 
+    ...state, 
+      ...e,
+      currTime: {
+        min: min < 10 ? '0' + min : min,
+        sec: secRemain < 10 ? '0' + secRemain : secRemain
+      }
+    }))
+  }
   
   const test = () => {
     // console.log('*-**-*-*-test');
@@ -157,13 +252,26 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
             )}
           </div>
           <div className="music_player__time">
+            <ReactPlayer 
+              url={state.track}
+              playing={isPlaying}
+              // playIcon={ArrowDown()}
+              width='0'
+              height='0'
+              ref={refPlayer}
+              onProgress={handleProgress}
+              // width='100%'
+              // height='100%'
+              //controls={true}
+            />
             {/* <p>
               {currTime.min}:{currTime.sec}
             </p>
             <p>
               {Time.min}:{Time.sec}
             </p> */}
-            <p>{currTime.min}:{currTime.sec}/{Time.min}:{Time.sec}</p>
+            {/* <p>{currTime.min}:{currTime.sec}/{Time.min}:{Time.sec}</p> */}
+            <p>{state.currTime.min}:{state.currTime.sec}</p>
           </div>
 
           {/* полоса воспроизведения */}
@@ -171,12 +279,18 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
             <input
               type="range"
               min={0}
-              max={duration / 1000}
+              //max={state.loadedSeconds / 1000}
+              max={state.loadedSeconds}
+              step={1}
               //default="0"
-              value={seconds}
+              value={state.playedSeconds}
               className="music_player__timeline"
+              
               onChange={(e) => {
-                sound.seek([e.target.value]);
+                //sound.seek([e.target.value]);
+                if(refPlayer !== undefined){
+                  refPlayer.current.seekTo(e.target.value)
+                }
               }}
             />
           </div>

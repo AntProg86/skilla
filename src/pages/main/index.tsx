@@ -269,80 +269,6 @@ const MainPage: React.FunctionComponent<Props> = () => {
       </>
     }
   ];
-
-  const dateSelectorList_1:DropdownOption[] = useMemo(()=>{
-    console.log('*-*-*-*useMemo');
-    
-    return [
-      {
-        id : 0,
-        value :  
-        <>
-          <IconCalendar/>
-          <p>{LocalizedStrings.three_days}</p>
-        </>,
-      },
-      {
-        id : 1,
-        value :  
-        <>
-          <IconCalendar/>
-          <p>{LocalizedStrings.week}</p>
-        </>,
-      },
-      {
-        id: 2,
-        value: 
-        <>
-          <IconCalendar/>
-          <p>{LocalizedStrings.month}</p>
-        </>,
-      },
-      {
-        id: 3,
-        value:
-        <>
-          <IconCalendar/>
-          <p>{LocalizedStrings.year}</p>
-        </>
-      },
-      {
-        id: 4,
-        value: 
-        <>
-          <div className='indicate_dates'>
-            <p>{LocalizedStrings.indicate_dates}</p>
-            {/* <p>{LocalizedStrings.date_from}</p> */}
-            <div onClick={(e)=>{e.stopPropagation()}}>
-              <DatePicker
-                selected={state.startDate}
-                onChange={(date)=>changeStartDate(date)}
-                dateFormat='dd.MM.yyyy'
-                //placeholderText='Start Date'
-                // showIcon
-                // icon={<IconCalendar/>}
-                locale={ru}
-              />
-              {/* <p>{LocalizedStrings.date_to}</p> */}
-              <DatePicker
-                selected={state.endDate}
-                onChange={(date)=>changeEndDate(date)}
-                dateFormat='dd.MM.yyyy'
-                //placeholderText='Start Date'
-                // showIcon
-                // icon={<IconCalendar/>}
-                locale={ru}
-              />
-            </div>
-          </div>
-        </>
-      }
-    ]
-  },[state.startDate, state.endDate, state.dateOptionSelected]);
-  
-  useMemo(()=>{
-
-  },[])
   
   useEffect(()=>{
     console.log('*-*-*-*-*useEffect');
@@ -516,7 +442,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
   };
 
   useEffect(()=>{
-    return
+    //return
     if(state.dateOptionSelected === undefined) return;
     
     //3 дня
@@ -716,7 +642,9 @@ const MainPage: React.FunctionComponent<Props> = () => {
     <main className='call_list__main'>
       <div className='call_list__container'>
         <section className='call_list__toolbar'>
-          <div onClick={test}>test
+          {/* <div onClick={test}>test
+          
+          </div> */}
           {/* <DatePicker
             selected={state.startDate}
             onChange={(date)=>changeStartDate(date)}
@@ -726,7 +654,6 @@ const MainPage: React.FunctionComponent<Props> = () => {
             // icon={<IconCalendar/>}
             locale={ru}
           /> */}
-          </div>
           {/* <MusicPlayer track={state.track}/> */}
           <div className='call_list__toolbar__dropdown_container'>
             <Dropdown

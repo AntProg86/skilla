@@ -24,7 +24,7 @@ const Dropdown: React.FunctionComponent<Props> = ({
   defaultValue
 
 }) => {
-  console.log('*-*-*-*Dropdown*-*-**Render');
+  //console.log('*-*-*-*Dropdown*-*-**Render');
   
   const [isActive, setIsActive] = useState(false);
   const refDropdow = useRef(null);
