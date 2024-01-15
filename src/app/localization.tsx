@@ -34,6 +34,7 @@ export interface IStrings extends LocalizedStringsMethods{
   year: string;
   month: string;
   week: string;
+  loading_recording: string;
 }
 
 // Таблица перевода
@@ -73,6 +74,7 @@ let strings: IStrings;
       month: 'месяц',
       year: 'год',
       indicate_dates: 'указать даты',
+      loading_recording: 'Загрузка записи...',
 
     },
     // en: {

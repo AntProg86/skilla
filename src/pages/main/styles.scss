@@ -205,9 +205,12 @@ body {
   font-size: 15px;
 }
 .call_list__table tbody td:last-child { 
-  //background: aqua;
   text-align: right;
   padding-right: 5px;
+}
+.call_list__table tbody td:last-child > div { 
+  display: flex;  
+  justify-content: right;
 }
 
 .call_list__table tbody tr { 

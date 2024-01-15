@@ -441,6 +441,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }));
   };
 
+  //Установить даты в соответствии с выбором пользователя
   useEffect(()=>{
     //return
     if(state.dateOptionSelected === undefined) return;
@@ -643,17 +644,6 @@ const MainPage: React.FunctionComponent<Props> = () => {
       <div className='call_list__container'>
         <section className='call_list__toolbar'>
           {/* <div onClick={test}>test
-          
-          </div> */}
-          {/* <DatePicker
-            selected={state.startDate}
-            onChange={(date)=>changeStartDate(date)}
-            dateFormat='dd.MM.yyyy'
-            //placeholderText='Start Date'
-            // showIcon
-            // icon={<IconCalendar/>}
-            locale={ru}
-          /> */}
           {/* <MusicPlayer track={state.track}/> */}
           <div className='call_list__toolbar__dropdown_container'>
             <Dropdown

@@ -56,44 +56,19 @@ const initState = {
   }
 };
 
-
 type Props = {
   track?:any;
-}
-
-const track_1 = require("./04. Раб страха.mp3");
+};
 
 const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
-  console.log('*-*-*-**Track Render');
-  
-  // console.log('*-*-*-*track_1');
-  // console.log(track_1);
-  // console.log('*-*-*-*-*track');
-  // console.log(track);
-  
-  
-  //const [track1?, setTrack] = useState(undefined)
-  
-  const getTrack_1 = () => {
-    const track_1 = require("./04. Раб страха.mp3");
-    const track_2 = require("./07. Бой продолжается.mp3");
-    return track_1
-  }
-  
-  const getTrack = useCallback(()=>{
-    console.log('*-*-*-*getTrack');
-    console.log(track);
+  //console.log('*-*-*-**MusicPlayer Render');
 
-    const track_1 = require("./04. Раб страха.mp3");
-    const track_2 = require("./07. Бой продолжается.mp3");
-    
-    if(track !== undefined){
-      return track
-      //return track_2
-      
-    }
-    
-    return track_1
+  useEffect(()=>{
+    if(track === undefined) return
+      changeState((state) => ({ 
+      ...state, 
+      track:URL.createObjectURL(track) 
+    }));
   },[track]);
 
   //const [track1, setTrack] = useState<any>();
@@ -102,78 +77,36 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   //const [play, { pause, duration, sound }] = useSound(track1);
   
-  const refPlayer = useRef()
-  
-  //текущее положение звука в минутах и секундах
-  const [currTime, setCurrTime] = useState({
-    min: 0,
-    sec: 0,
-  });
-
-  const [Time, setTime] = useState({
-    min: 0,
-    sec: 0,
-  });
+  const refPlayer = useRef();
 
   // текущая позиция звука в секундах
   const [seconds, setSeconds] = useState();
-  
-  // useEffect(()=> {
-  //   const sec = duration / 1000;
-  //   const min = Math.floor(sec / 60);
-  //   const secRemain = Math.floor(sec % 60);
-  //   const time = {
-  //     min: min,
-  //     sec: secRemain
-  //   }
-  //   setTime(time);
 
-  // },[sound])
-
-  useEffect(()=>{
-    let url = `https://api.skilla.ru/mango/getRecord?record=MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow&partnership_id=578`;
-    let requestOptions = {
-      headers: {
-        'Authorization': 'Bearer testtoken',
-        'Content-type': 'audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3',
-        'Content-Transfer-Encoding': 'binary',
-        'Content-Disposition': 'filename="record.mp3"'
-      },
-    } as any;
-    // Определяем метод запроса
-    requestOptions["method"] = 'POST';
+  // useEffect(()=>{
+  //   let url = `https://api.skilla.ru/mango/getRecord?record=MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow&partnership_id=578`;
+  //   let requestOptions = {
+  //     headers: {
+  //       'Authorization': 'Bearer testtoken',
+  //       'Content-type': 'audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3',
+  //       'Content-Transfer-Encoding': 'binary',
+  //       'Content-Disposition': 'filename="record.mp3"'
+  //     },
+  //   } as any;
+  //   // Определяем метод запроса
+  //   requestOptions["method"] = 'POST';
  
-    fetch(url, requestOptions)
-    .then(response => response.blob())
-    .then(blob => {
-      console.log('*-*-*-*blod');
-      console.log(blob);
-      //setTrack(URL.createObjectURL(blob))
-      changeState((state) => ({ 
-      ...state, 
-       track: track_1//URL.createObjectURL(blob) 
-      }))
-    })
-  },[])
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (sound) {
-  //       setSeconds(sound.seek([])); // устанавливаем состояние с текущим значением в секундах
-  //       const min = Math.floor(sound.seek([]) / 60);
-  //       const sec = Math.floor(sound.seek([]) % 60);
-  //       setCurrTime({
-  //         min,
-  //         sec,
-  //       });
-  //     }
-  //   }, 1000);
-  //   return () => clearInterval(interval);
-  // }, [sound]);
-  
-  const getTime = () => {
-    //state.loadedSeconds - state.playedSeconds
-  }
+  //   fetch(url, requestOptions)
+  //   .then(response => response.blob())
+  //   .then(blob => {
+  //     console.log('*-*-*-*blod');
+  //     console.log(blob);
+  //     //setTrack(URL.createObjectURL(blob))
+  //     changeState((state) => ({ 
+  //     ...state, 
+  //      track: URL.createObjectURL(blob) 
+  //     }))
+  //   })
+  // },[])
   
   const playingButton = () => {
     //console.log('*-*-*-*-*playingButton');
@@ -190,28 +123,9 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
   //Получает время воспроизведения
   const handleProgress = (e:any) => {
 
-    //console.log(e);
-    // loaded: 1
-    // loadedSeconds: 32.184 //Общее время
-    // played: 0.010530014914243102
-    // playedSeconds: 0.338898 //Сколько прошло
-
-    // let _time = state.loadedSeconds - state.playedSeconds
-    // const min = Math.floor(sound.seek([]) / 60);
-    // const sec = Math.floor(sound.seek([]) % 60);
-
-    const sec = e.loadedSeconds / 1000;
-    //const min = Math.floor(sec / 60);
-    //const secRemain = Math.floor(sec % 60);
-    console.log((e.loadedSeconds - e.playedSeconds).toFixed(0));
-    //console.log(secRemain);
-    console.log(sec);
-    console.log(e.loadedSeconds.toFixed(0));
-
-    let sec_1 = (e.loadedSeconds - e.playedSeconds).toFixed(0)
-    const min = Math.floor(Number(sec_1) / 60);
-    const secRemain = Math.floor(Number(sec_1) % 60);
-    console.log(secRemain);
+    let sec = (e.loadedSeconds - e.playedSeconds).toFixed(0)
+    const min = Math.floor(Number(sec) / 60);
+    const secRemain = Math.floor(Number(sec) % 60);
     
     changeState((state) => ({ 
     ...state, 
@@ -221,18 +135,28 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
         sec: secRemain < 10 ? '0' + secRemain : secRemain
       }
     }))
-  }
-  
+  };
+
+  //Скачать запись
+  const downloadRecord = () => {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(track);
+    link.download = 'call record.mp3';
+    link.click();
+  };
+
   const test = () => {
     // console.log('*-**-*-*-test');
     // console.log(track_1);
-  }
+  };
   
   return (
     <div className='music_player__container'>
-      <section>
+      {state.track === undefined ? (
+        <>{LocalizedStrings.loading_recording}</>
+      ) : (
+        <section>
         <div className="music_player__component">
-
           <div>
             {!isPlaying ? (
               <button className="music_player__playButton" onClick={playingButton}>
@@ -264,13 +188,6 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
               // height='100%'
               //controls={true}
             />
-            {/* <p>
-              {currTime.min}:{currTime.sec}
-            </p>
-            <p>
-              {Time.min}:{Time.sec}
-            </p> */}
-            {/* <p>{currTime.min}:{currTime.sec}/{Time.min}:{Time.sec}</p> */}
             <p>{state.currTime.min}:{state.currTime.sec}</p>
           </div>
 
@@ -295,11 +212,15 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
             />
           </div>
 
-          <IconDownload/>
-          <IconClose/>
+          <div onClick={downloadRecord} className='music_player__icon_download'>
+            <IconDownload/>
+          </div>
+          {/* <IconClose/> */}
           
         </div>
       </section>
+      )}
+      
     </div>
   );
 };
