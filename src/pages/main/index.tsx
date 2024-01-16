@@ -8,7 +8,7 @@ import { postCallListFetch, postRecordFetch } from '#api/actions';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css'
 import ru from 'date-fns/locale/ru';
-import CallTable from './components/table';
+import CallTable from './components/table/index';
 
 import data from '../../data/data.json'
 
@@ -24,7 +24,6 @@ import {
 import { IconCalendar, ArrowLeft, ArrowRight } from './pictures/svg';
 import Dropdown, {DropdownOption} from './components/dropdown';
 import { addDays, getDate, getMonth, getTimeFromSeconds, getWeek, getYear, takeAwayDays } from '#src/functions/date';
-import MusicPlayer from './components/music-player';
 
 type State = {
   startDate?: Date;
@@ -597,10 +596,10 @@ const MainPage: React.FunctionComponent<Props> = () => {
   };
   
   const test = () => {
-    console.log('-*-*-*-test');
-    console.log(state.startDate);
-    console.log(state.endDate);
-    console.log(state.dateOptionSelected);
+    // console.log('-*-*-*-test');
+    // console.log(state.startDate);
+    // console.log(state.endDate);
+    // console.log(state.dateOptionSelected);
     
   };
   
@@ -609,8 +608,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
     <main className='call_list__main'>
       <div className='call_list__container'>
         <section className='call_list__toolbar'>
-          {/* <div onClick={test}>test
-          {/* <MusicPlayer track={state.track}/> */}
+          {/* <div onClick={test}>test*/}
           <div className='call_list__toolbar__dropdown_container'>
             <Dropdown
               options={filterInOutList}

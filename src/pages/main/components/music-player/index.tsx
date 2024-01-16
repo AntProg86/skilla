@@ -71,17 +71,16 @@ const MusicPlayer: React.FunctionComponent<Props> = ({track}) => {
     }));
   },[track]);
 
-  //const [track1, setTrack] = useState<any>();
   const [state, changeState] = useState<State>(initState);
   
   const [isPlaying, setIsPlaying] = useState(false);
-  //const [play, { pause, duration, sound }] = useSound(track1);
   
   const refPlayer = useRef();
 
   // текущая позиция звука в секундах
   const [seconds, setSeconds] = useState();
 
+  //16.01.2024
   // useEffect(()=>{
   //   let url = `https://api.skilla.ru/mango/getRecord?record=MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow&partnership_id=578`;
   //   let requestOptions = {

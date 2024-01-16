@@ -10,7 +10,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 3px;
+  //padding: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  //padding-right: 5px;
+  //margin-right: 10px;
 }
 
 .music_player__range {
