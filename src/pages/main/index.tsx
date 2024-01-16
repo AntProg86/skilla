@@ -274,8 +274,8 @@ const MainPage: React.FunctionComponent<Props> = () => {
     
     changeState((state) => ({ 
     ...state, 
-      startDate: new Date(),
-      endDate: new Date(),
+      // startDate: new Date(),
+      // endDate: new Date(),
       dateOptionSelected: dateSelectorList[0],
      //observableList: getObservableList(data.results)
     }))
@@ -431,6 +431,14 @@ const MainPage: React.FunctionComponent<Props> = () => {
     }));
   };
 
+  //При изменении даты сам «state.dateOptionSelected» не меняется и новая дата не отображается, поэтому меняем его так
+  useEffect(()=>{
+    //dateSelectorList
+    if(state.dateOptionSelected !== undefined && state.dateOptionSelected.id === 4){
+      changeDateOptionSelected(dateSelectorList[4])
+    }
+  },[state.startDate, state.endDate]);
+
   //Изменить период дат
   const changeDateOptionSelected = (value:DropdownOption) => {
     changeState((state) => ({ 
@@ -447,8 +455,8 @@ const MainPage: React.FunctionComponent<Props> = () => {
     //3 дня
     if(state.dateOptionSelected.id === 0){
       const _date = takeAwayDays(new Date(), 3);
-      console.log('*-*-*-*_date');
-      console.log(_date);
+      // console.log('*-*-*-*_date');
+      // console.log(_date);
       
       changeState((state) => ({ 
       ...state, 
@@ -536,8 +544,6 @@ const MainPage: React.FunctionComponent<Props> = () => {
     console.log(state.startDate);
     console.log(state.endDate);
     console.log(state.dateOptionSelected);
-    
-    
     
   };
   
