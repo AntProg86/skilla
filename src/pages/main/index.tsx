@@ -154,6 +154,7 @@ const getObservableList = (arr:any[]):ICall[] => {
 
       record: arr[i].record,
       partnership_id: arr[i].partnership_id,
+      date: arr[i].date_notime,
     })
   }
   
@@ -192,9 +193,6 @@ const filterInOutList = [
 ];
 
 //#endregion
-
-const track_1 = require("./components/music-player/04. Раб страха.mp3");
-const track_2 = require("./components/music-player/07. Бой продолжается.mp3");
 
 const MainPage: React.FunctionComponent<Props> = () => {
 
@@ -271,7 +269,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
   ];
   
   useEffect(()=>{
-    console.log('*-*-*-*-*useEffect');
+    //console.log('*-*-*-*-*useEffect');
     // console.log(data);
     
     changeState((state) => ({ 
@@ -286,9 +284,9 @@ const MainPage: React.FunctionComponent<Props> = () => {
 
   //Получить список по датам
   useEffect(()=>{
-    if(state.startDate && state.endDate && state.startDate <= state.endDate){
-      //console.log('*-*-*-*-Date');
+    if(state.startDate && state.endDate){
       getCallList()
+      //console.log('*-*-*-*-Date');
     }
   },[
     state.startDate,
@@ -306,7 +304,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
   //Получить список звонков с сервера
   const getCallList = () => {
     console.log('*-*-*-**getCallList');
-    console.log(state.sort_by);
+    //console.log(state.sort_by);
     
     _appContext.doFetch(postCallListFetch,
        {
@@ -449,11 +447,13 @@ const MainPage: React.FunctionComponent<Props> = () => {
     //3 дня
     if(state.dateOptionSelected.id === 0){
       const _date = takeAwayDays(new Date(), 3);
+      console.log('*-*-*-*_date');
+      console.log(_date);
       
       changeState((state) => ({ 
       ...state, 
-       startDate: new Date(),
-       endDate: _date
+       startDate: _date,
+       endDate: new Date()
       }));
     }
     
@@ -537,103 +537,6 @@ const MainPage: React.FunctionComponent<Props> = () => {
     console.log(state.endDate);
     console.log(state.dateOptionSelected);
     
-    
-    return;
-    //console.log(getDate(state.startDate));
-    //getCallList()
-    //console.log(getObservableListByFilter());
-    //console.log(state.observableList);
-    
-    let url = `https://api.skilla.ru/mango/getRecord?record=MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow&partnership_id=578`;
-    let requestOptions = {
-      headers: {
-        'Authorization': 'Bearer testtoken',
-        'Content-type': 'audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3',
-        'Content-Transfer-Encoding': 'binary',
-        'Content-Disposition': 'filename="record.mp3"'
-      },
-    } as any;
-    // Определяем метод запроса
-    requestOptions["method"] = 'POST';
-
-    fetch(url, requestOptions)
-    .then(response => response.blob())
-    .then(blob => {
-      console.log('*-*-*-*blod');
-      console.log(blob);
-    })
-
-    return
-    _appContext.doFetch(postRecordFetch,
-      {
-        record: 'MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow', 
-        partnership_id: '578',
-     })
-   .then((data:any) => {   
-     const {payload, error} = data;
-
-    //  console.log('*-*-*--*-*-*data');
-    //  console.log(data);
-    
-      
-      // changeState((state) => ({ 
-      // ...state, 
-      //  track: payload 
-      // }))
-    
-     if (payload){
-      // const ctx = new AudioContext()
-      // let audio;
-      const url = URL.createObjectURL(payload);
-      changeState((state) => ({ 
-      ...state, 
-       track: url 
-      }))
-      //   //new Audio(url).play();
-      
-      //   console.log(url + '.mp3');
-      //   const link = document.createElement('a');
-      // link.href = URL.createObjectURL(payload);
-      // link.download = 'zxczxc.mp3';
-      // link.click();
-        
-      // changeState((state) => ({ 
-      // ...state, 
-      //   track: track_1
-      // }));
-      // ctx.decodeAudioData(payload).then((decodedAudio)=>{
-
-      //   console.log('*-*-*decodedAudio');
-      //   console.log(decodedAudio);
-        
-        
-        
-      //   changeState((state) => ({ 
-      //     ...state, 
-      //       track: decodedAudio
-      //     }));
-      // })
-      
-      
-      //   console.log('*-*-*-*-*payload');
-      //  console.log(qwe.);
-       
-       
-
-       // if(payload.total_rows > 0){
-
-       //   changeState((state) => ({ 
-       //   ...state, 
-       //    observableList: getObservableList(payload.results) 
-       //   }));
-       // }
-     }
-     
-     // Очищаем сообщение
-     //dispatch(ActionMainLoadPanelMessage(''));
-     // Скрываем индикацию загрузки на весь экран
-     //dispatch(ActionMainLoadPanelShow(false));
-   });
     
     
   };

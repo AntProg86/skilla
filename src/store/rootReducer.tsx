@@ -6,6 +6,11 @@ import { Action, ApplicationState } from './types';
 import errorAbsoluteSlice from '#src/components/errorAbsolute/reducer';
 
 export const rootReducer = configureStore<ApplicationState, Action, Middleware[]>({
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+    serializableCheck: false
+  }),
+
   reducer: {
     // language: languageSlice.reducer,
     errorAbsolute: errorAbsoluteSlice.reducer,

@@ -88,7 +88,7 @@ export interface ICall {
   
 
   //**дата и время звонка */
-  data?: Date;
+  date?: Date;
 
   /**номер с которого был звонок */
   from_number?: string;

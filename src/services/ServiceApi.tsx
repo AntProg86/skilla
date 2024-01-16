@@ -25,8 +25,8 @@ class serviceApi {
   getResourceBlobBuffer = async (url:string, requestOptions:object, progressBarShow:boolean = true) => {
 
     return await fetch(`${url}`, requestOptions).then(result => {
-      console.log('-*-*--*--result');
-      console.log(result);
+      // console.log('-*-*--*--result');
+      // console.log(result);
       
       //Here body is not ready yet, throw promise
       if (!result.ok) throw result;
@@ -200,7 +200,7 @@ class serviceApi {
     }
     
     const queryString = queries.join('&');
-    console.log(`${address+'?'}${queryString}`);
+    //console.log(`${address+'?'}${queryString}`);
     
     const res_resource = await this.getResourceBlobBuffer(`${address+'?'}${queryString}`, requestOptions);
     //const res_resource = await this.getResource(`${address}`, requestOptions);

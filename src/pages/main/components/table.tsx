@@ -10,9 +10,8 @@ import MusicPlayer from './music-player';
 type Props = {
   children: any;
   observableList?:Array<ICall>;
-}
+};
 
-//duration:string,
 const CellDuration: React.FunctionComponent<{record_id:string, partnership_id:string}> = ({record_id, partnership_id}) => {
 
   //const [ObservableObject, setObsOb] = useState<React.ReactNode>(<></>);
@@ -43,36 +42,36 @@ const CellDuration: React.FunctionComponent<{record_id:string, partnership_id:st
       // Скрываем индикацию загрузки на весь экран
       //dispatch(ActionMainLoadPanelShow(false));
     });
-    return;
-    let url = `https://api.skilla.ru/mango/getRecord?record=MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow&partnership_id=578`;
-    let requestOptions = {
-      headers: {
-        'Authorization': 'Bearer testtoken',
-        'Content-type': 'audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3',
-        'Content-Transfer-Encoding': 'binary',
-        'Content-Disposition': 'filename="record.mp3"'
-      },
-    } as any;
-    // Определяем метод запроса
-    requestOptions["method"] = 'POST';
+
+    // let url = `https://api.skilla.ru/mango/getRecord?record=MToxMDA2NzYxNToxOTQ0MDE2NjI1Mzow&partnership_id=578`;
+    // let requestOptions = {
+    //   headers: {
+    //     'Authorization': 'Bearer testtoken',
+    //     'Content-type': 'audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3',
+    //     'Content-Transfer-Encoding': 'binary',
+    //     'Content-Disposition': 'filename="record.mp3"'
+    //   },
+    // } as any;
+    // // Определяем метод запроса
+    // requestOptions["method"] = 'POST';
  
-    fetch(url, requestOptions)
-    .then(response => response.blob())
-    .then(blob => {
-      console.log('*-*-*-*blod');
-      console.log(blob);
-      //setTrack(URL.createObjectURL(blob))
-      // changeState((state) => ({ 
-      // ...state, 
-      //  track: track_1//URL.createObjectURL(blob) 
-      // }))
-    })
+    // fetch(url, requestOptions)
+    // .then(response => response.blob())
+    // .then(blob => {
+    //   console.log('*-*-*-*blod');
+    //   console.log(blob);
+    //   //setTrack(URL.createObjectURL(blob))
+    //   // changeState((state) => ({ 
+    //   // ...state, 
+    //   //  track: track_1//URL.createObjectURL(blob) 
+    //   // }))
+    // })
   },[]);
   
   return(
     <MusicPlayer track={track}/>
   )
-}
+};
 
 const CallTable: React.FunctionComponent<Props> = ({observableList, children}) => {
   //console.log('*-*--*render Table');
@@ -109,7 +108,6 @@ const CallTable: React.FunctionComponent<Props> = ({observableList, children}) =
                     <>{call.duration}</>
                   )}
                 </td>
-                {/* <td>{call.duration}</td> */}
               </tr>
             ))
           }
