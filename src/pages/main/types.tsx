@@ -102,3 +102,9 @@ export interface ICall {
    * Дозвонился*/
   status?: call_status;
 }
+
+export type TableSections = {
+  date:Date, 
+  totalRows: number, 
+  observableList:Array<ICall>
+}

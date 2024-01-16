@@ -2,14 +2,17 @@ import React, { useEffect, useContext, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LocalizedStrings from '#src/app/localization';
 //import './styles.scss';
-import { ICall } from '../types';
+import { ICall, TableSections } from '../types';
 import { postRecordFetch } from '#api/actions';
 import { AppContext } from '#src/app/context';
 import MusicPlayer from './music-player';
+import { tr } from 'date-fns/locale';
+import { getDate } from '#src/functions/date';
 
 type Props = {
   children: any;
   observableList?:Array<ICall>;
+  tableSections?:Array<TableSections>;
 };
 
 const CellDuration: React.FunctionComponent<{record_id:string, partnership_id:string}> = ({record_id, partnership_id}) => {
@@ -73,7 +76,7 @@ const CellDuration: React.FunctionComponent<{record_id:string, partnership_id:st
   )
 };
 
-const CallTable: React.FunctionComponent<Props> = ({observableList, children}) => {
+const CallTable: React.FunctionComponent<Props> = ({observableList, tableSections, children}) => {
   //console.log('*-*--*render Table');
   
   return(
@@ -86,7 +89,52 @@ const CallTable: React.FunctionComponent<Props> = ({observableList, children}) =
         </thead>
 
         <tbody>
-          {observableList &&
+          {tableSections &&
+            tableSections.map((sect, index)=>(
+              <React.Fragment key={getDate(sect.date)}>
+                <tr  className='call_list__table__section_separator'>
+                  <td colSpan={7}>
+                    <div className='call_list__table__date_and_count_row'>
+                      <var>
+                        {getDate(sect.date)}
+                        <sup>
+                          {sect.totalRows}
+                        </sup>
+                      </var>
+                    </div>
+                  </td>
+                </tr>
+                {sect.observableList &&
+                  sect.observableList.map((call)=>(
+                    <tr key={call.id}>
+                      <td>
+                        <img src={call.type.toString()} alt="" />
+                      </td>
+                      <td>{call.time}</td>
+                      <td>
+                        <img className='person_avatar_img' src={call.person_avatar} alt="" />
+                      </td>
+                      <td>{call.call}</td>
+                      <td className='text-color-1'>{call.source}</td>
+                      <td>{call.assessment()}</td>
+                      <td>
+                        {call.record !== "" ? (
+                          <div>
+                            <CellDuration record_id={call.record} partnership_id={call.partnership_id}/>
+                          </div>
+                        ) : (
+                          <>{call.duration}</>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                }
+              </React.Fragment>
+            ))
+
+          }
+          {/* 16.01.2024 */}
+          {/* {observableList &&
             observableList.map((call)=>(
               <tr key={call.id}>
                 <td>
@@ -110,7 +158,7 @@ const CallTable: React.FunctionComponent<Props> = ({observableList, children}) =
                 </td>
               </tr>
             ))
-          }
+          } */}
         </tbody>
       </table>
     </div>

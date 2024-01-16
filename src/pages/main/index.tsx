@@ -19,15 +19,19 @@ import {
   call_type,
   assessment,
   filterInOut,
+  TableSections,
  } from './types';
 import { IconCalendar, ArrowLeft, ArrowRight } from './pictures/svg';
 import Dropdown, {DropdownOption} from './components/dropdown';
-import { getDate, getMonth, getTimeFromSeconds, getWeek, getYear, takeAwayDays } from '#src/functions/date';
+import { addDays, getDate, getMonth, getTimeFromSeconds, getWeek, getYear, takeAwayDays } from '#src/functions/date';
 import MusicPlayer from './components/music-player';
 
 type State = {
   startDate?: Date;
   endDate?: Date;
+
+  //Секции таблицы с датой, количеством записей и записи.
+  tableSections?: Array<TableSections>
 
   //Список звонков на экране
   observableList?: Array<ICall>;
@@ -149,7 +153,7 @@ const getObservableList = (arr:any[]):ICall[] => {
       person_avatar: arr[i].person_avatar,
       call: arr[i].to_number,//arr[i].in_out === in_out.incoming ? arr[i].from_number : arr[i].to_number,
       source: arr[i].source,
-      assessment: getAssessment,
+      assessment: ()=>{return<></>},//getAssessment,
       duration: getTimeFromSeconds(arr[i].time)[0],
 
       record: arr[i].record,
@@ -158,8 +162,8 @@ const getObservableList = (arr:any[]):ICall[] => {
     })
   }
   
-  console.log('-*-*-*-*--*_list');
-  console.log(_list);
+  // console.log('-*-*-*-*--*_list');
+  // console.log(_list);
   
   return _list;
 };
@@ -285,8 +289,61 @@ const MainPage: React.FunctionComponent<Props> = () => {
   //Получить список по датам
   useEffect(()=>{
     if(state.startDate && state.endDate){
-      getCallList()
-      //console.log('*-*-*-*-Date');
+      // getCallList()
+      // console.log('*-*-*-*-Date');
+      // return
+
+      let _startDate = state.startDate;
+      const _arr = new Array();
+      
+      while (_startDate < state.endDate) {
+        
+        // console.log('*-*-*-Rules');
+        // console.log(_startDate);
+
+        const __date = new Date(_startDate)
+        
+        _arr.push(
+          _appContext.doFetch(postCallListFetch,
+            {
+             date_start: getDate(_startDate), 
+             date_end: getDate(_startDate),
+             in_out: state.in_out === undefined ? null : state.in_out, 
+             sort_by: state.sort_by === undefined ? null : state.sort_by
+           }).then((data:any)=>{
+            // console.log('*-*-*Promes 1'); 
+            // console.log(data);
+            
+            return Object.assign(data, {date:__date})
+          })
+        )
+        
+        _startDate = addDays(_startDate, 1);
+      }
+      Promise.all(_arr).then((data)=>{
+        
+        // console.log('All prosimes');
+        // console.log(data);
+
+        const _arrOb = new Array<TableSections>();
+
+        for(let i = 0; i<data.length; i++){
+          _arrOb.push(
+            {
+              date: data[i].date,
+              totalRows: data[i].payload.total_rows,
+              observableList: getObservableList(data[i].payload.results)
+            }
+          )
+        }
+
+        // console.log('*-*-*---*Promiss List');
+        // console.log(_arrOb);
+        changeState((state) => ({ 
+        ...state, 
+         tableSections: _arrOb
+        }));
+      });
     }
   },[
     state.startDate,
@@ -323,18 +380,18 @@ const MainPage: React.FunctionComponent<Props> = () => {
         // console.log('*-*-*-*-*payload');
         // console.log(payload);
         
-        changeState((state) => ({ 
-        ...state, 
-          observableList: getObservableList(payload.results) 
-        }));
+        // changeState((state) => ({ 
+        // ...state, 
+        //   observableList: getObservableList(payload.results) 
+        // }));
 
-        // if(payload.total_rows > 0){
+        if(payload.total_rows > 0){
 
-        //   changeState((state) => ({ 
-        //   ...state, 
-        //    observableList: getObservableList(payload.results) 
-        //   }));
-        // }
+          changeState((state) => ({ 
+          ...state, 
+           observableList: getObservableList(payload.results) 
+          }));
+        }
       }
       
       // Очищаем сообщение
@@ -593,6 +650,7 @@ const MainPage: React.FunctionComponent<Props> = () => {
         <section>
           <CallTable 
             observableList={state.observableList}
+            tableSections={state.tableSections}
           >
             <td className='call_list__table__col_1'>
               {LocalizedStrings.type}
